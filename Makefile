@@ -9,16 +9,16 @@ image:
 # gopherbot in a container.
 dev:
 	docker container run --name clu \
-	  --mount 'source=gopherbot-context,target=/var/lib/gopherbot' \
+	  --mount 'source=clu-home,target=/home' \
 	  clu
 
 # Example prod container; note that the robot home directory is a
 # persistent volume. You might want to use a different log driver for
 # your environment, e.g. journald.
 prod:
-	docker container run --name clu --restart unless-stopped -d \
+	docker container run --name clu --restart on-failure:7 -d \
 	  --log-driver journald --log-opt tag="clu" \
-	  --mount 'source=gopherbot-context,target=/var/lib/gopherbot' \
+	  --mount 'source=clu-home,target=/home' \
 	  clu
 
 clean:
