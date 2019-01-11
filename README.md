@@ -1,0 +1,1 @@
+The `clu-docker` repository is used for developing the Dockerized version of Gopherbot (on a Chromebook no less). The Dockerfile and Makefile give an example of how to create your own gopherbot container, but it needs more documentation.
