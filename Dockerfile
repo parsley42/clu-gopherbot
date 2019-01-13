@@ -1,22 +1,26 @@
 FROM lnxjedi/gopherbot:amazon
 
 USER root:root
-
-ARG goversion=1.11.4
 ENV HOSTNAME=clu.container
+
+# Customisation section. For Clu, it installs gcc, zip
+# and Go - needed to build Gopherbot.
+ARG goversion=1.11.4
 ENV PATH=${PATH}:${HOME}/go/bin:/usr/local/go/bin
 
-COPY .env ${HOME}
-
-RUN chown bin:bin .env && \
-  chmod 0400 .env && \
-  yum -y install \
+RUN yum -y install \
     gcc \
     zip && \
   yum clean all && \
   rm -rf /var/cache/yum && \
   cd /usr/local && \
   curl -L https://dl.google.com/go/go${goversion}.linux-amd64.tar.gz | tar xzf -
+# /end Customisation
+
+COPY .env ${HOME}
+
+RUN chown bin:bin .env && \
+  chmod 0400 .env
 
 USER ${USER}:${GROUP}
 
