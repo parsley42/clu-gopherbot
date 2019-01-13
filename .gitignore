@@ -1,5 +1,9 @@
 gopherbot
-custom
+brain
+!brain/bot:encryptionKey
+!brain/README.txt
 history
+!history/README.txt
 workspace
+!workspace/README.txt
 .env

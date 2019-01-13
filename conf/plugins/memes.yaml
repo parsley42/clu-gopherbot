@@ -1,0 +1,32 @@
+---
+# Add some DERP! memes
+Disabled: false
+Help:
+- Keywords: [ "meme", "derp" ]
+  Helptext: [ "(bot), <something> derp - shortest path to DERP" ]
+- Keywords: [ "meme", "derp" ]
+  Helptext: [ "(bot), derpface <something>/<something> - when you need a DERP face" ]
+- Keywords: [ "meme", "derp", "batman" ]
+  Helptext: [ "(bot), batderp <something>/<something> - for heroicly Bat-tastic DERPS" ]
+- Keywords: [ "meme", "derp", "giraffe" ]
+  Helptext: [ "(bot), derpgiraffe <something>/<something> - a derp for animal lovers" ]
+- Keywords: [ "meme", "derp", "charlie", "sheen" ]
+  Helptext: [ "(bot), sheenderp <something>/<something> - when you ask yourself have I taken too many meds" ]
+- Keywords: [ "meme", "derp", "cat", "kitten" ]
+  Helptext: [ "(bot), derpcat <something>/<something> - adorable / disturbing derp" ]
+CommandMatchers:
+- Command: "806713"
+  Regex: '(?i:(.+ .+) (derp!?))'
+- Command: "806713"
+  Regex: '(?i:derpface ([^/]+)(?:/([^/]+))?)'
+- Command: "27584969"
+  Regex: '(?i:batderp ([^/]+)(?:/([^/]+))?)'
+- Command: "28387334"
+  Regex: '(?i:derpgiraffe ([^/]+)(?:/([^/]+))?)'
+- Command: "14859329"
+  Regex: '(?i:sheenderp ([^/]+)(?:/([^/]+))?)'
+- Command: "43953962"
+  Regex: '(?i:derpcat ([^/]+)(?:/([^/]+))?)'
+Config:
+  Username: dpmemer
+  Password: {{ decrypt "P8btBB3sT2zILIBqQPNZ49g4Rm2rJtIIVzqrYDhVZOOMNsXnSPFtDA==" }}
