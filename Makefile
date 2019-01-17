@@ -1,6 +1,6 @@
 # Makefile with examples for running gopherbot
 
-.PHONY: image dev-amazon prod-amazon clean allclean
+.PHONY: image dev prod clean allclean
 
 image:
 	docker image build -t clu .
