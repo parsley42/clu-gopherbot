@@ -1,4 +1,4 @@
-# Makefile with examples for running gopherbot
+# Makefile with examples for running gopherbot in a Docker container
 
 .PHONY: image dev prod clean allclean
 
@@ -16,7 +16,7 @@ dev:
 # persistent volume. You might want to use a different log driver for
 # your environment, e.g. journald.
 prod:
-	docker container run --name clu --restart on-failure:7 -d \
+	docker container run --name clu --restart unless-stopped -d \
 	  --log-driver journald --log-opt tag="clu" \
 	  --mount 'source=clu-home,target=/home' \
 	  clu

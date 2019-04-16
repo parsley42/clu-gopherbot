@@ -5,7 +5,7 @@ ENV HOSTNAME=clu.container
 
 # Customisation section. For Clu, it installs gcc, zip
 # and Go - needed to build Gopherbot.
-ARG goversion=1.11.4
+ARG goversion=1.12.4
 ENV PATH=${PATH}:${HOME}/go/bin:/usr/local/go/bin
 
 RUN yum -y install \
