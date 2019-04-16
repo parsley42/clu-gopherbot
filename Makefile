@@ -1,29 +1,46 @@
 # Makefile with examples for running gopherbot in a Docker container
 
-.PHONY: image dev prod clean allclean
+.PHONY: prod image dev clean allclean
 
-image:
-	docker image build -t clu .
+include .env
 
-# Example dev containers bind mounts the local install dir for running
-# gopherbot in a container.
-dev:
-	docker container run --name clu \
-	  --mount 'source=clu-home,target=/home' \
-	  clu
+GOPHER_SOURCE_IMAGE?=lnxjedi/gopherbot:latest
+GOPHER_BUILD_IMAGE?=$(GOPHER_SOURCE_IMAGE)
 
-# Example prod container; note that the robot home directory is a
-# persistent volume. You might want to use a different log driver for
-# your environment, e.g. journald.
+# Example prod container that runs detached and restarts on failure.
 prod:
-	docker container run --name clu --restart unless-stopped -d \
-	  --log-driver journald --log-opt tag="clu" \
-	  --mount 'source=clu-home,target=/home' \
-	  clu
+	docker container run --name $(GOPHER_BOTNAME) --restart unless-stopped -d \
+	  --log-driver journald --log-opt tag="$(GOPHER_BOTNAME)" \
+	  --mount 'source=$(GOPHER_BOTNAME)-home,target=/home' \
+	  --env-file .env -e HOSTNAME=$(HOSTNAME) \
+	  $(GOPHER_BUILD_IMAGE)
+
+# Build a custom image
+image:
+	[ $(GOPHER_BUILD_IMAGE) != $(GOPHER_SOURCE_IMAGE) ] || ( echo "Custom build image not defined"; exit 1 )
+	docker image build -t $(GOPHER_BUILD_IMAGE) \
+	--build-arg SOURCE_IMAGE=$(GOPHER_SOURCE_IMAGE) .
+
+# A dev container that outputs the log to STDOUT.
+dev:
+	docker container run --name $(GOPHER_BOTNAME) \
+	  --mount 'source=$(GOPHER_BOTNAME)-home,target=/home' \
+	  --env-file .env -e HOSTNAME=$(HOSTNAME) \
+	  $(GOPHER_BUILD_IMAGE)
+
+# The secrets container can be used with 'encrypt' and
+# 'store <task|repository> <secret|parameter>' to provide secrets
+# to the robot that never get sent to Slack.
+secrets:
+	docker container run -it --name $(GOPHER_BOTNAME) \
+	  --env-file setsecrets.env \
+	  --mount 'source=$(GOPHER_BOTNAME)-home,target=/home' \
+	  --env-file .env -e HOSTNAME=$(HOSTNAME) \
+	  $(GOPHER_BUILD_IMAGE)
 
 clean:
-	docker container stop clu || :
-	docker container rm clu || :
+	docker container stop $(GOPHER_BOTNAME) || :
+	docker container rm $(GOPHER_BOTNAME) || :
 
 allclean: clean
-	docker image rm clu || :
+	docker image rm $(GOPHER_BOTNAME) || :

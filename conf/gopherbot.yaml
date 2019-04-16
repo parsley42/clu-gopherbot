@@ -61,7 +61,7 @@ UserRoster:
 # Floyd is the production robot that builds gopherbot
 - UserName: floyd
   UserID: U138KTVCL
-  TriggersOnly: true
+  BotUser: true
 - UserName: parsley
   UserID: U0JLW8EMS
 
