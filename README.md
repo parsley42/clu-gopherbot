@@ -1,7 +1,7 @@
 # Clu
-`Clu` is the development instance of Gopherbot that runs on my Chromebook. This repository represents the bulk of Clu's custom configuration; the rest is documented in this README.
+`Clu` is the development instance of Gopherbot that runs wherever I need him. This repository represents the bulk of Clu's custom configuration; the rest is documented in this README.
 
-`Clu` was used to create robot.skel for `makeRobot.sh`.
+`Clu` was used to create robot.skel for `new-robot.sh`.
 
 ## Robot Directory structure and Private Environment
 **Gopherbot** version 2 can read credentials and secrets from a `.env` file in the working directory. When configured for running setuid (not root; normally 'bin'), the `.env` file should be `bin:root` / `0400`.
