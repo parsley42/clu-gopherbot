@@ -2,7 +2,7 @@
 # for development with Docker.
 # List of users that can issue admin commands like reload, quit. Should be
 # a list of user handles / nicks.
-AdminUsers: [ "adrienne" ]
+AdminUsers: [ "parsley", "adrienne" ]
 AdminContact: "David Parsley, <parsley@linuxjedi.org>"
 DefaultChannels: [ "general", "random", "chat", "botdev", "clu-jobs" ]
 Alias: "!"
@@ -28,6 +28,11 @@ ExternalPlugins:
   "echo":
     Description: Trivial bash plugin
     Path: plugins/echo.sh
+
+LoadableModules:
+  "knock":
+    Description: Knock knock jokes!
+    Path: goplugins/knock.so
 
 ExternalJobs:
   "hello":
