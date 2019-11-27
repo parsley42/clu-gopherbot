@@ -2,11 +2,21 @@
 # for development with Docker.
 # List of users that can issue admin commands like reload, quit. Should be
 # a list of user handles / nicks.
-AdminUsers: [ "parsley", "adrienne" ]
 AdminContact: "David Parsley, <parsley@linuxjedi.org>"
-DefaultChannels: [ "general", "random", "chat", "botdev", "clu-jobs" ]
 Alias: "!"
 IgnoreUsers: [ "floyd", "bender" ]
+
+## Configure the robot connection protocol
+{{ $proto := env "GOPHER_PROTOCOL" | default "terminal" }}
+
+## Protocol-specific configuration
+{{ if eq $proto "slack" }}
+AdminUsers: [ "parsley", "adrienne" ]
+DefaultChannels: [ "general", "random", "chat", "botdev", "clu-jobs" ]
+ProtocolConfig:
+  MaxMessageSplit: {{ env "GOPHER_SLACK_MAX_MSGS" | default "2" }}
+  SlackToken: {{ env "GOPHER_SLACK_TOKEN" }}
+{{ end }}
 
 # If a job doesn't specify otherwise, this is the channel where it runs
 DefaultJobChannel: clu-jobs
@@ -50,7 +60,7 @@ DefaultMessageFormat: Raw
 # for help on changing the log level and viewing contents of the log.
 #LogLevel: info
 #LogLevel: trace
-LogLevel: info
+LogLevel: debug
 
 #HistoryConfig:
   #URLPrefix: 'http://localhost:9000'
