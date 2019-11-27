@@ -1,1 +1,1 @@
-Placeholder for brain directory, where robot memories are stored. This directory is unused in Docker containers.
+The only memory ever (and always) stored here is bot:encryptionKey, 32 random bytes encrypted by "$GOPHER_ENCRYPTION_KEY". It's a misconfiguration for other memories to be stored here.

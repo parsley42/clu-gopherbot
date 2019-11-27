@@ -18,6 +18,13 @@ ProtocolConfig:
   SlackToken: {{ env "GOPHER_SLACK_TOKEN" }}
 {{ end }}
 
+Brain: file
+BrainConfig:
+  ## NOTE: custom/brain is where the binary encryption key is stored;
+  ## the BrainDirectory should be someplace else, "private/brain" for a
+  ## standard install.
+  BrainDirectory: "private/brain"
+
 # If a job doesn't specify otherwise, this is the channel where it runs
 DefaultJobChannel: clu-jobs
 
