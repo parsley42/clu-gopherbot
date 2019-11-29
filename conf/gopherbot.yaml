@@ -50,6 +50,9 @@ LoadableModules:
   "knock":
     Description: Knock knock jokes!
     Path: goplugins/knock.so
+  "memes":
+    Description: Memes!
+    Path: goplugins/meme.so
 
 ExternalJobs:
   "hello":
