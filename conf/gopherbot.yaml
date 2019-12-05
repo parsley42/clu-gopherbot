@@ -7,7 +7,8 @@ Alias: "!"
 IgnoreUsers: [ "floyd", "bender" ]
 
 ## Configure the robot connection protocol
-{{ $proto := env "GOPHER_PROTOCOL" | default "terminal" }}
+{{ $proto := env "GOPHER_PROTOCOL" | default "slack" }}
+Protocol: {{ $proto }}
 
 ## Protocol-specific configuration
 {{ if eq $proto "slack" }}
