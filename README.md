@@ -1,33 +1,12 @@
 # Clu
-`Clu` is the development instance of Gopherbot that runs wherever I need him. This repository represents the bulk of Clu's custom configuration; the rest is documented in this README.
+`Clu` is the development instance of Gopherbot that runs wherever I need him, and tracks development of **Gopherbot**. This repository represents the bulk of Clu's custom configuration; the only other bits:
+* [clu-state](https://github.com/parsley42/clu-state) - Clu's memories and other personal belongings; only Clu should be pushing there
+* Clu's `private/environment` - an environment file, which should be mode `0600` and closely guarded:
 
-`Clu` was used to create robot.skel for `new-robot.sh`.
-
-## Robot Directory structure and Private Environment
-**Gopherbot** version 2 can read credentials and secrets from a `.env` file in the working directory. When configured for running setuid (not root; normally 'bin'), the `.env` file should be `bin:root` / `0400`.
-
-Example `.env`:
-```env
-# .env private environment file - stuff that should never be in a git repo unencrypted
-GOPHER_SLACK_TOKEN=xoxb-thisClearlyIsn'tMyToken
-GOPHER_ENCRYPTION_KEY=likewise,notEven32chars
-# Repository URL defined here so Clu can clone his own custom config when running in a docker container
-GOPHER_CUSTOM_REPOSITORY=https://github.com/parsley42/clu-gopherbot.git
-# This let's the robot know who it can trust prior to cloning the configuration repository (where a longer list of admins can be provided)
-GOPHER_ADMIN=parsley
+```shell
+GOPHER_ENCRYPTION_KEY=<32 chars used to decrypt binary-encrypted-key>
+GOPHER_CUSTOM_REPOSITORY=<git remote for this repository>
 ```
 
-## Secrets stored in the Brain
-Once the robot is up and running, the first thing it normally needs is it's own **ssh** keypair; this is required for running in a container. To provide a strong passphrase for the ssh private key, open a private chat with the robot and give this command:
-`store task secret ssh-init BOT_SSH_PHRASE=SuperRipeLongTomatoPassHorsePhrase`
-
-## Bootstrapping the Docker Container
-
-1. `make` creates a local `clu` image
-2. `make dev` starts the container in the foreground
-3. To load configuration from the custom repository, send the robot a DM: `update`
-
-## Upgrading a Dockerized Install
-1. Stop and remove the current container, leaving the `home` volume
-2. `make` to create the updated `clu` image
-3. `make dev` or `make prod` to start a new container from the image
+* `Clu`'s custom configuration will form the basis for new robot configuration, the contents of [robot.skel](https://github.com/lnxjedi/gopherbot/tree/master/robot.skel)
+* `Clu`'s configuration may be _ahead_ of master, when it represents a development target
