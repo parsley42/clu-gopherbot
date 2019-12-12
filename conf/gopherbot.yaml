@@ -10,13 +10,10 @@ IgnoreUsers: [ "floyd", "bender" ]
 {{ $proto := env "GOPHER_PROTOCOL" | default "slack" }}
 Protocol: {{ $proto }}
 
+DefaultChannels: [ "general", "random", "chat", "botdev", "clu-jobs" ]
 ## Protocol-specific configuration
 {{ if eq $proto "slack" }}
-AdminUsers: [ "parsley", "adrienne" ]
-DefaultChannels: [ "general", "random", "chat", "botdev", "clu-jobs" ]
-ProtocolConfig:
-  MaxMessageSplit: {{ env "GOPHER_SLACK_MAX_MSGS" | default "2" }}
-  SlackToken: xoxb-18712879267-471111629924-{{ decrypt "jfhPe8akfivTRnfeCxyIetdUl+Jb7hIWnjeVFiwLJarFHuW4TuSD7GQ3F0s2puuZ3JUotw==" }}
+{{ .Include "slack.yaml" }}
 {{ end }}
 
 {{ if eq $proto "terminal" }}
@@ -92,16 +89,6 @@ BotInfo:
   FullName: Clu Gopherbot
   FirstName: Clu
   LastName: Gopherbot
-
-{{ if eq $proto "slack" }}
-UserRoster:
-# Floyd is the production robot that builds gopherbot
-- UserName: floyd
-  UserID: U138KTVCL
-  BotUser: true
-- UserName: parsley
-  UserID: U0JLW8EMS
-{{ end }}
 
 # Configuration for sending out email. For Authtype: none, User and Password
 # can be left out. Note that sending email will fail if Email isn't set.
