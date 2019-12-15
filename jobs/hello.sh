@@ -20,5 +20,7 @@ FailTask dmnotify parsley "Your trivial hello world job failed"
 
 #set -x
 # PHRASE is the argument passed in
-Say "$PHRASE / $NONCE"
+Say "$PHRASE / $NONCE - now I'll restart!"
 Log "Info" "I said $PHRASE and $NONCE"
+
+AddTask restart

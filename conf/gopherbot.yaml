@@ -71,7 +71,7 @@ DefaultMessageFormat: Raw
 # for help on changing the log level and viewing contents of the log.
 #LogLevel: info
 #LogLevel: trace
-LogLevel: info
+LogLevel: debug
 
 #HistoryConfig:
   #URLPrefix: 'http://localhost:9000'
