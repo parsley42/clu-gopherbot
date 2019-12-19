@@ -40,6 +40,9 @@ ExternalPlugins:
   "echo":
     Description: Trivial bash plugin
     Path: plugins/echo.sh
+  "pythondemo":
+    Description: Sample python plugin
+    Path: plugins/samples/pythondemo.py
 
 LoadableModules:
   "knock":
