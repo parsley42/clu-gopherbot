@@ -14,6 +14,8 @@ else
     Say "Darn, I have to wait. $GOPHER_CALLER_ID"
     exit 0
 fi
+ls -Fla ..
+head /etc/group >&2
 sleep 4
 
 FailTask dmnotify parsley "Your trivial hello world job failed"
