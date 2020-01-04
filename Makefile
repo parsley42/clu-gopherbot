@@ -1,46 +1,33 @@
 # Makefile with examples for running gopherbot in a Docker container
 
-.PHONY: prod image dev clean allclean
+.PHONY: prod dev clean
 
-include .env
+include ../.env
 
-GOPHER_SOURCE_IMAGE?=lnxjedi/gopherbot:latest
-GOPHER_BUILD_IMAGE?=$(GOPHER_SOURCE_IMAGE)
+GOPHER_SOURCE_IMAGE?=lnxjedi/gopherbot:amazon
+GOPHER_BOTNAME?=$(notdir $(basename $(abspath ..)))
 
 # Example prod container that runs detached and restarts on failure.
 prod:
 	docker container run --name $(GOPHER_BOTNAME) --restart unless-stopped -d \
 	  --log-driver journald --log-opt tag="$(GOPHER_BOTNAME)" \
-	  --mount 'source=$(GOPHER_BOTNAME)-home,target=/home' \
-	  --env-file .env -e HOSTNAME=$(HOSTNAME) \
-	  $(GOPHER_BUILD_IMAGE)
+	  --env-file ../.env -e HOSTNAME=$(HOSTNAME) \
+	  $(GOPHER_SOURCE_IMAGE)
 
-# Build a custom image
-image:
-	[ $(GOPHER_BUILD_IMAGE) != $(GOPHER_SOURCE_IMAGE) ] || ( echo "Custom build image not defined"; exit 1 )
-	docker image build -t $(GOPHER_BUILD_IMAGE) \
-	--build-arg SOURCE_IMAGE=$(GOPHER_SOURCE_IMAGE) .
-
-# A dev container that outputs the log to STDOUT.
+# A dev container that outputs directly to STDOUT/STDERR.
 dev:
 	docker container run --name $(GOPHER_BOTNAME) \
-	  --mount 'source=$(GOPHER_BOTNAME)-home,target=/home' \
-	  --env-file .env -e HOSTNAME=$(HOSTNAME) \
-	  $(GOPHER_BUILD_IMAGE)
+	  --env-file ../.env -e HOSTNAME=$(HOSTNAME) \
+	  -e GOPHER_LOGLEVEL=debug \
+	  $(GOPHER_SOURCE_IMAGE)
 
-# The secrets container can be used with 'encrypt' and
-# 'store <task|repository> <secret|parameter>' to provide secrets
-# to the robot that never get sent to Slack.
-secrets:
-	docker container run -it --name $(GOPHER_BOTNAME) \
-	  --env-file setsecrets.env \
-	  --mount 'source=$(GOPHER_BOTNAME)-home,target=/home' \
-	  --env-file .env -e HOSTNAME=$(HOSTNAME) \
-	  $(GOPHER_BUILD_IMAGE)
+# A debug container that just executes a shell
+debug:
+	docker container run --name $(GOPHER_BOTNAME) \
+	  --env-file ../.env -e HOSTNAME=$(HOSTNAME) \
+	  -e GOPHER_LOGLEVEL=debug -it --entrypoint /bin/bash \
+	  $(GOPHER_SOURCE_IMAGE)
 
 clean:
 	docker container stop $(GOPHER_BOTNAME) || :
 	docker container rm $(GOPHER_BOTNAME) || :
-
-allclean: clean
-	docker image rm $(GOPHER_BOTNAME) || :

@@ -16,13 +16,14 @@ else
 fi
 ls -Fla ..
 head /etc/group >&2
-sleep 4
 
 FailTask dmnotify parsley "Your trivial hello world job failed"
 
-#set -x
-# PHRASE is the argument passed in
-Say "$PHRASE / $NONCE - now I'll restart!"
 Log "Info" "I said $PHRASE and $NONCE"
 
-AddTask restart
+AddTask pause-brain
+AddTask say "I've paused my brain !!"
+AddTask exec sleep 3
+AddTask resume-brain
+AddTask say "$PHRASE / $NONCE - now I'll restart!"
+AddTask restart-robot
