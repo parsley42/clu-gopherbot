@@ -2,7 +2,7 @@
 
 .PHONY: prod dev clean
 
-include ../.env
+include ../private/environment
 
 GOPHER_SOURCE_IMAGE?=lnxjedi/gopherbot:amazon
 GOPHER_BOTNAME?=$(notdir $(basename $(abspath ..)))
@@ -11,20 +11,20 @@ GOPHER_BOTNAME?=$(notdir $(basename $(abspath ..)))
 prod:
 	docker container run --name $(GOPHER_BOTNAME) --restart unless-stopped -d \
 	  --log-driver journald --log-opt tag="$(GOPHER_BOTNAME)" \
-	  --env-file ../.env -e HOSTNAME=$(HOSTNAME) \
+	  --env-file ../private/environment -e HOSTNAME=$(HOSTNAME) \
 	  $(GOPHER_SOURCE_IMAGE)
 
 # A dev container that outputs directly to STDOUT/STDERR.
 dev:
 	docker container run --name $(GOPHER_BOTNAME) \
-	  --env-file ../.env -e HOSTNAME=$(HOSTNAME) \
+	  --env-file ../private/environment -e HOSTNAME=$(HOSTNAME) \
 	  -e GOPHER_LOGLEVEL=debug \
 	  $(GOPHER_SOURCE_IMAGE)
 
 # A debug container that just executes a shell
 debug:
 	docker container run --name $(GOPHER_BOTNAME) \
-	  --env-file ../.env -e HOSTNAME=$(HOSTNAME) \
+	  --env-file ../private/environment -e HOSTNAME=$(HOSTNAME) \
 	  -e GOPHER_LOGLEVEL=debug -it --entrypoint /bin/bash \
 	  $(GOPHER_SOURCE_IMAGE)
 
