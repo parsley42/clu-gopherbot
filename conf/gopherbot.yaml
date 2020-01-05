@@ -141,14 +141,8 @@ NameSpaces:
       Value: {{ decrypt "CBow8Kg/9iynxBQFWru+EdWAookX7ERVKcUuLEIp9NDZcpm/QDChILq9p0/2X2dCB7gIrJ4=" }}
   "manage":
     Parameters:
-    - Name: GOPHER_CUSTOM_REPOSITORY
-      Value: {{ env "GOPHER_CUSTOM_REPOSITORY" }}
-    - Name: GOPHER_CUSTOM_BRANCH
-      Value: {{ env "GOPHER_CUSTOM_BRANCH" | default "master" }}
     - Name: GOPHER_STATE_REPOSITORY
       Value: git@github.com:parsley42/clu-state.git
-    - Name: GOPHER_STATE_BRANCH
-      Value: master
     # A default installed robot stores its brain in state/brain
     - Name: STATE_DIR
       Value: {{ env "GOPHER_STATE_DIRECTORY" | default "state" }}
