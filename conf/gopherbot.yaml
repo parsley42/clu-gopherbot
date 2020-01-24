@@ -81,10 +81,12 @@ DefaultJobChannel: {{ env "GOPHER_JOBCHANNEL" | default $defaultjobchannel }}
 ## fixed-width font.
 #DefaultMessageFormat: Variable # 'Raw' if not specified
 
-# Job scheduling with github.com/robfig/cron
+# Job scheduling with github.com/robfig/cron, seconds required
 ScheduledJobs:
 - Name: backup
   Schedule: "@every 1m"
+- Name: logrotate
+  Schedule: "30 * * * * *"
 # - Name: hello
 #   Schedule: "@every 30s" # see: https://godoc.org/github.com/robfig/cron
 #   Arguments: # an array of strings; up to the job to parse numbers & bools
@@ -129,10 +131,11 @@ ExternalJobs:
   "hello":
     Description: Trivial hello world job for testing
     Path: jobs/hello.sh
-    Privileged: true
     Parameters:
     - Name: NONCE
       Value: "No way, Jack!"
+  "logrotate":
+    Path: jobs/logrotate.sh
 
 NameSpaces:
   "ssh":
