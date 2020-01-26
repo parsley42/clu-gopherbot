@@ -86,7 +86,7 @@ ScheduledJobs:
 - Name: backup
   Schedule: "@every 1m"
 - Name: logrotate
-  Schedule: "30 * * * * *"
+  Schedule: "0 1 0 * * *"
 # - Name: hello
 #   Schedule: "@every 30s" # see: https://godoc.org/github.com/robfig/cron
 #   Arguments: # an array of strings; up to the job to parse numbers & bools
@@ -142,14 +142,6 @@ NameSpaces:
     Parameters:  
     - Name: BOT_SSH_PHRASE
       Value: {{ decrypt "CBow8Kg/9iynxBQFWru+EdWAookX7ERVKcUuLEIp9NDZcpm/QDChILq9p0/2X2dCB7gIrJ4=" }}
-  "manage":
-    Parameters:
-    - Name: GOPHER_STATE_REPOSITORY
-      Value: git@github.com:parsley42/clu-state.git
-    # A default installed robot stores its brain in state/brain
-    - Name: STATE_DIR
-      Value: {{ env "GOPHER_STATE_DIRECTORY" | default "state" }}
-
 
 DefaultMessageFormat: Raw
 # Users the bot should never listen to
