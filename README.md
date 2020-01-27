@@ -1,7 +1,7 @@
 # Clu
-`Clu` is the Gopherbot development robot that runs wherever I need him, and tracks with ongoing development of **Gopherbot**. This repository represents the bulk of Clu's custom configuration; the only other bits:
-* [clu-state](https://github.com/parsley42/clu-state) - Clu's memories and other personal belongings; Clu's automated `backup` job updates this repository whenever his memories change
+`Clu` is the Gopherbot development robot that runs wherever I need him, and tracks with ongoing development of **Gopherbot**. This repository represents almost everything I need to run Clu; the only other bits:
 * clu-private (private repository) - Clu's `private/environment` - an environment file, which should be mode `0600` and closely guarded (see below for example contents)
+* robot-state branch - Separate branch of this repository for backing up Clu's memories; should always remain separate from `master`, etc.
 
 `Clu`'s custom configuration will form the basis for new robot configuration, the contents of [robot.skel](https://github.com/lnxjedi/gopherbot/tree/master/robot.skel). At times, `Clu`'s configuration may be _ahead_ of master, when it represents a development target.
 
@@ -13,7 +13,7 @@ This is the directory structure of a well-formed robot, created when I run `../g
     * `gopherbot` - symlink to `/opt/gopherbot/gopherbot`
     * `terminal.sh` - convenience script for running `clu` with the terminal connector
     * `custom/` - clone of `parsley42/clu-gopherbot`, custom configuration repository
-    * `state/` - clone of `parsley42/clu-state`, where clu saves state, e.g. memories
+    * `state/` - clone of `parsley42/clu-gopherbot`, `robot-state` branch, where clu saves state, e.g. memories
     * `private/` - clone of `parsley42/clu-private`, a private repository containing only `environment`
     * `Makefile` - a set of targets for running clu in a local container; see [Running Clu](#running-clu)
     * `environment` - a symlink to `private/environment` or `.env` if fetched from a `.env` file; see [Fetching Clu](#fetching-clu)
