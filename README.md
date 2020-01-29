@@ -1,7 +1,10 @@
 # Clu
 `Clu` is the Gopherbot development robot that runs wherever I need him, and tracks with ongoing development of **Gopherbot**. This repository represents almost everything I need to run Clu; the only other bits:
-* clu-private (private repository) - Clu's `private/environment` - an environment file, which should be mode `0600` and closely guarded (see below for example contents)
+* clu-private (private repository) - Clu's `private/environment` - an environment file, which should be mode `0600` and closely guarded (see below for example contents); the contents of this file is normall stored in e.g. a password / secret manager, and includes Clu's encryption key
 * robot-state branch - Separate branch of this repository for backing up Clu's memories; should always remain separate from `master`, etc.
+* Clu's repository has two deploy keys configured:
+   * `deploy_rsa.pub` is a read-only deploy key for bootstrapping Clu in to a new running environment, such as a newly built VM or container
+   * `manage_rsa.pub` is a dedicated encrypted key that Clu uses for managing his own repository; used, for instance, for backing up long-term memories to the `robot-state` branch
 
 `Clu`'s custom configuration will form the basis for new robot configuration, the contents of [robot.skel](https://github.com/lnxjedi/gopherbot/tree/master/robot.skel). At times, `Clu`'s configuration may be _ahead_ of master, when it represents a development target.
 
