@@ -128,6 +128,22 @@ LoadableModules:
     Path: goplugins/meme.so
 
 ExternalJobs:
+  "updatecfg":
+    Parameters:
+    - Name: "KEYNAME"
+      Value: "manage_rsa"
+  "save":
+    Parameters:
+    - Name: "KEYNAME"
+      Value: "manage_rsa"
+  "backup":
+    Parameters:
+    - Name: "KEYNAME"
+      Value: "manage_rsa"
+  "restore":
+    Parameters:
+    - Name: "KEYNAME"
+      Value: "manage_rsa"
   "hello":
     Description: Trivial hello world job for testing
     Path: jobs/hello.sh
