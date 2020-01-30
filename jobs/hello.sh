@@ -25,5 +25,5 @@ AddTask pause-brain
 AddTask say "I've paused my brain !!"
 AddTask exec sleep 3
 AddTask resume-brain
-AddTask say "$PHRASE / $NONCE - now I'll restart!"
+AddTask say "$PHRASE / $NONCE - now I'll restart myself!"
 AddTask restart-robot
