@@ -83,8 +83,8 @@ DefaultJobChannel: {{ env "GOPHER_JOBCHANNEL" | default $defaultjobchannel }}
 
 # Job scheduling with github.com/robfig/cron, seconds required
 ScheduledJobs:
-- Name: backup
-  Schedule: "@every 1m"
+# - Name: backup
+#   Schedule: "@every 1m"
 - Name: logrotate
   Schedule: "0 1 0 * * *"
 # - Name: hello
