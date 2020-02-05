@@ -76,7 +76,7 @@ $ /opt/gopherbot/gopherbot
 ... (clone, restart, and restore brain) ...
 2020/01/06 11:53:07 Info: Robot is initialized and running
 ```
-After which you'll have a basic directory structure with `GOPHER_CUSTOM_REPOSITORY` in `custom/`, and `GOPHER_STATE_REPOSITORY` (defined in `custom/conf/gopherbot.yaml`) restored in to `state/`.
+After which you'll have a basic directory structure with `GOPHER_CUSTOM_REPOSITORY` in `custom/`, and `GOPHER_STATE_REPOSITORY` (defined in `custom/conf/robot.yaml`) restored in to `state/`.
 
 **Method 2** Run in container with Docker
 ```shell
