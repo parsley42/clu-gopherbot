@@ -6,7 +6,7 @@ AdminContact: "David Parsley, <parsley@linuxjedi.org>"
 IgnoreUsers: [ "floyd", "bender" ]
 
 ## Configure the robot connection protocol
-{{ $proto := env "GOPHER_PROTOCOL" | default "slack" }}
+{{ $proto := env "GOPHER_PROTOCOL" | default "terminal" }}
 Protocol: {{ $proto }}
 
 DefaultChannels: [ "general", "random", "chat", "botdev", "clu-jobs" ]
