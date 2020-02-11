@@ -9,7 +9,6 @@ IgnoreUsers: [ "floyd", "bender" ]
 {{ $proto := env "GOPHER_PROTOCOL" | default "terminal" }}
 Protocol: {{ $proto }}
 
-DefaultChannels: [ "general", "random", "chat", "botdev", "clu-jobs" ]
 ## Protocol-specific configuration
 {{ if eq $proto "slack" }}
 {{ .Include "slack.yaml" }}
@@ -66,7 +65,8 @@ HistoryProvider: {{ $history }}
 {{ if eq $history "file" }}
 HistoryConfig:
   Directory: {{ $histdir }}
-  #URLPrefix: 'http://localhost:9000'
+  URLPrefix: 'http://localhost:9000'
+  LocalPort: ':9000'
 {{ end }}
 ## End history config
 
