@@ -4,3 +4,4 @@ checkoutLocation: "custom"
 workspaceLocation: "."
 tasks:
 - command: touch .restore
+- command: ln -s /opt/gopherbot/gopherbot .
