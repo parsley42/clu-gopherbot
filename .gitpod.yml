@@ -1,5 +1,5 @@
 ---
-image: lnxjedi/gopherbot:latest
+image: lnxjedi/gopherbot:gitpod
 checkoutLocation: "custom"
 workspaceLocation: "."
 tasks:
