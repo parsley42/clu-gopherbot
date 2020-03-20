@@ -59,7 +59,7 @@ BrainConfig:
 {{ if $workdir -}} WorkSpace: {{ $workdir }} {{- end }}
 
 ## Configure a history provider
-{{ $history := env "GOPHER_HISTORY_PROVIDER" | default "file" }}
+{{ $history := env "GOPHER_HISTORY_PROVIDER" | default "mem" }}
 HistoryProvider: {{ $history }}
 
 {{ if eq $history "file" }}
@@ -67,6 +67,12 @@ HistoryConfig:
   Directory: {{ $histdir }}
   URLPrefix: 'http://localhost:9000'
   LocalPort: ':9000'
+{{ end }}
+{{ if eq $history "mem" }}
+HistoryConfig:
+  BufferSize: 131072
+  MaxLineLength: 8092
+  Truncated: " <...>"
 {{ end }}
 ## End history config
 
@@ -114,6 +120,7 @@ ExternalPlugins:
     Path: plugins/chuck.rb
   "echo":
     Description: Trivial bash plugin
+    Privileged: true
     Path: plugins/echo.sh
   "pythondemo":
     Description: Sample python plugin

@@ -33,7 +33,16 @@ case "$command" in
 		;;
 	"echo")
 		Pause 1 # because the robot knows how to "type"
+		echo "Hello, world: $1"
+		echo "Hello, error world: $1" >&2
 		Say "$1"
+		FinalTask "tail-log"
+		;;
+	"init")
+		echo "Clu starting up!"
+		ls -Fla ..
+		whoami
+		FinalTask "email-log" "parsley@linuxjedi.org"
 		;;
 	"repeat")
 		REPEAT=$(PromptForReply SimpleString "What do you want me to repeat?")
