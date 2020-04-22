@@ -1,3 +1,4 @@
+--- # Gopherbot should ignore this line, since it breaks the yaml parser
 # This is the non-sensitive configuration for Clu, the gopherbot used
 # for development with Docker.
 # List of users that can issue admin commands like reload, quit. Should be
@@ -59,7 +60,7 @@ BrainConfig:
 {{ if $workdir -}} WorkSpace: {{ $workdir }} {{- end }}
 
 ## Configure a history provider
-{{ $history := env "GOPHER_HISTORY_PROVIDER" | default "mem" }}
+{{ $history := env "GOPHER_HISTORY_PROVIDER" | default "file" }}
 HistoryProvider: {{ $history }}
 
 {{ if eq $history "file" }}
@@ -89,10 +90,12 @@ DefaultJobChannel: {{ env "GOPHER_JOBCHANNEL" | default $defaultjobchannel }}
 
 # Job scheduling with github.com/robfig/cron, seconds required
 ScheduledJobs:
-# - Name: backup
-#   Schedule: "@every 1m"
+- Name: backup
+  Schedule: "@every 1m"
 - Name: logrotate
   Schedule: "0 1 0 * * *"
+- Name: "pause-notifies"
+  Schedule: "0 0 8 * * *"
 # - Name: hello
 #   Schedule: "@every 30s" # see: https://godoc.org/github.com/robfig/cron
 #   Arguments: # an array of strings; up to the job to parse numbers & bools
@@ -147,6 +150,8 @@ ExternalJobs:
 NameSpaces:
   "ssh":
     Parameters:
+    - Name: "KEYNAME"
+      Value: "robot_key"
     - Name: BOT_SSH_PHRASE
       Value: {{ decrypt "CBow8Kg/9iynxBQFWru+EdWAookX7ERVKcUuLEIp9NDZcpm/QDChILq9p0/2X2dCB7gIrJ4=" }}
   "manage":

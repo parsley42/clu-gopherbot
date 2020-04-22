@@ -36,6 +36,7 @@ case "$command" in
 		echo "Hello, world: $1"
 		echo "Hello, error world: $1" >&2
 		Say "$1"
+		/bin/false
 		FinalTask "tail-log"
 		;;
 	"init")

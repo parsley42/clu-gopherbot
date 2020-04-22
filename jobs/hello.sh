@@ -17,7 +17,7 @@ fi
 ls -Fla ..
 head /etc/group >&2
 
-FailTask dmnotify parsley "Your trivial hello world job failed"
+# FailTask dmnotify parsley "Your trivial hello world job failed"
 
 Log "Info" "I said $PHRASE and $NONCE"
 
@@ -25,6 +25,7 @@ AddTask pause-brain
 AddTask say "I've paused my brain !!"
 AddTask exec sleep 3
 AddTask resume-brain
-FinalTask email-log parsley@linuxjedi.org dlp7y@virginia.edu
+AddTask exec /bin/false foo bar baz
+FinalTask email-log parsley@linuxjedi.org
 #AddTask say "$PHRASE / $NONCE - now I'll restart myself!"
 #AddTask restart-robot
