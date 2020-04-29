@@ -89,6 +89,7 @@ DefaultJobChannel: {{ env "GOPHER_JOBCHANNEL" | default $defaultjobchannel }}
 #DefaultMessageFormat: Variable # 'Raw' if not specified
 
 # Job scheduling with github.com/robfig/cron, seconds required
+{{ if ne $proto "terminal" }}
 ScheduledJobs:
 - Name: backup
   Schedule: "@every 1m"
@@ -96,6 +97,7 @@ ScheduledJobs:
   Schedule: "0 1 0 * * *"
 - Name: "pause-notifies"
   Schedule: "0 0 8 * * *"
+{{ end }}
 # - Name: hello
 #   Schedule: "@every 30s" # see: https://godoc.org/github.com/robfig/cron
 #   Arguments: # an array of strings; up to the job to parse numbers & bools
