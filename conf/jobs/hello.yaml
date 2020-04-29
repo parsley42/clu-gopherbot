@@ -1,5 +1,5 @@
 ---
-HistoryLogs: 7
+KeepLogs: 7
 Arguments:
 - Label: phrase
   Regex: '.+'

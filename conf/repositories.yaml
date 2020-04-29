@@ -10,12 +10,15 @@
 "github.com/lnxjedi/gopherbot":
   Type: localbuild
   CloneURL: https://github.com/lnxjedi/gopherbot.git
+  Dependencies:
+  - github.com/parsley42/awstools
   Parameters:
   - Name: NOTIFY_USER
     Value: parsley
 "github.com/parsley42/awstools":
-  Type: localbuild
-  CloneURL: https://github.com/parsley42/awstools.git
+   Type: localbuild
+   KeepLogs: 7
+   CloneURL: https://github.com/parsley42/awstools.git
 "github.com/parsley42/gopherbot":
   Type: localbuild
   CloneURL: https://github.com/parsley42/gopherbot.git
@@ -25,7 +28,7 @@
 # "github.com/lnxjedi/luminos":
 #   Type: localbuild
 #   CloneURL: https://github.com/lnxjedi/luminos.git
-#   KeepHistory: 14
+#   KeepLogs: 14
 #   Parameters:
 #   - Name: NOTIFY_USER
 #     Value: parsley

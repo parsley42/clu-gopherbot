@@ -5,7 +5,7 @@
 # and possibly replace the value for User:
 # If notifications go to multiple channels, add entries
 # to the Triggers array.
-HistoryLogs: 14
+KeepLogs: 14
 Quiet: true
 Triggers:
 - User: github
