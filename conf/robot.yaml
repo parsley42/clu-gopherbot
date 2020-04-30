@@ -5,6 +5,7 @@
 # a list of user handles / nicks.
 AdminContact: "David Parsley, <parsley@linuxjedi.org>"
 IgnoreUsers: [ "floyd", "bender" ]
+IgnoreUnlistedUsers: true
 
 ## Configure the robot connection protocol
 {{ $proto := env "GOPHER_PROTOCOL" | default "terminal" }}
@@ -148,6 +149,14 @@ ExternalJobs:
       Value: "No way, Jack!"
   "logrotate":
     Path: jobs/logrotate.sh
+  "nowhere":
+    Description: Simple test for ssh-job wrapper
+    Path: jobs/ssh-job.sh
+    Parameters:
+    - Name: REMOTEHOST
+      Value: localhost
+    - Name: REMOTETASK
+      Value: status
 
 NameSpaces:
   "ssh":
