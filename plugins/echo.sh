@@ -43,7 +43,7 @@ case "$command" in
 		echo "Clu starting up!"
 		ls -Fla ..
 		whoami
-		FinalTask "email-log" "parsley@linuxjedi.org"
+		# FinalTask "email-log" "parsley@linuxjedi.org"
 		;;
 	"repeat")
 		REPEAT=$(PromptForReply SimpleString "What do you want me to repeat?")
