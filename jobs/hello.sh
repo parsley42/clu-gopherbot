@@ -26,6 +26,6 @@ AddTask say "I've paused my brain !!"
 AddTask exec sleep 3
 AddTask resume-brain
 AddTask exec /bin/false foo bar baz
-FinalTask email-log parsley@linuxjedi.org
+#FinalTask email-log parsley@linuxjedi.org
 #AddTask say "$PHRASE / $NONCE - now I'll restart myself!"
 #AddTask restart-robot
