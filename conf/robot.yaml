@@ -141,6 +141,9 @@ LoadableModules:
     Path: goplugins/meme.so
 
 ExternalJobs:
+  "sleep":
+    Description: Start a job to sit in the background for a while
+    Path: jobs/sleep.sh
   "hello":
     Description: Trivial hello world job for testing
     Path: jobs/hello.sh
