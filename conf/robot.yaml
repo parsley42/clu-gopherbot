@@ -174,7 +174,11 @@ NameSpaces:
       Value: "manage_key"
     - Name: BOT_SSH_PHRASE
       Value: {{ decrypt "CBow8Kg/9iynxBQFWru+EdWAookX7ERVKcUuLEIp9NDZcpm/QDChILq9p0/2X2dCB7gIrJ4=" }}
-    
+  "github":
+    Parameters:
+    - Name: "GITHUB_TOKEN"
+      Value: "{{ decrypt "fdpNIcQnOD0GrlOeQbUfPB0i6iGp+cqn3WPWRum/Ycl/IJZeVsFYFlJjoNhXITTl0TNWJZ8HjUw1jfvjbGr24ENmFUo=" }}"
+
 DefaultMessageFormat: Raw
 # Users the bot should never listen to
 #IgnoreUsers: [ "otherbot", "slackbot" ]
