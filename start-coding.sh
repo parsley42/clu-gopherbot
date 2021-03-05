@@ -13,4 +13,9 @@ cat > $HOME/.gitconfig <<EOF
 [pull]
 	rebase = true
 EOF
+# Null connect to github to populate known_hosts;
+# Ignore ssh error value; github.com for instance will exit 1
+ssh -o PasswordAuthentication=no -o PubkeyAuthentication=no \
+-o StrictHostKeyChecking=no github.com : 2>&1 || :
+
 exec ssh-add $HOME/coding_key
