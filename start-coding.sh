@@ -18,4 +18,5 @@ EOF
 ssh -o PasswordAuthentication=no -o PubkeyAuthentication=no \
 -o StrictHostKeyChecking=no github.com : 2>&1 || :
 
+ssh-add -D
 exec ssh-add $HOME/coding_key
