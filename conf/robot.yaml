@@ -144,6 +144,10 @@ ExternalJobs:
   "sleep":
     Description: Start a job to sit in the background for a while
     Path: jobs/sleep.sh
+  "github-poller":
+    Description: Job for polling GitHub to see if repositories have been updated
+    Path: jobs/github-poller.py
+    NameSpace: github
   "hello":
     Description: Trivial hello world job for testing
     Path: jobs/hello.sh
@@ -168,6 +172,10 @@ NameSpaces:
       Value: "robot_key"
     - Name: BOT_SSH_PHRASE
       Value: {{ decrypt "CBow8Kg/9iynxBQFWru+EdWAookX7ERVKcUuLEIp9NDZcpm/QDChILq9p0/2X2dCB7gIrJ4=" }}
+  "github":
+    Parameters:
+    - Name: "GITHUB_TOKEN"
+      Value: "{{ decrypt "yBJE1oAvpE0E8KAasJROSuDDaBQQqpG+nXttWaod1fE3zx5wkN9pw4p+qtQBTBOSo61LqRFBQNlwHem0HPNorfWjZ6Y=" }}"
   "manage":
     AppendParameters:
     - Name: "KEYNAME"

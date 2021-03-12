@@ -6,12 +6,16 @@
 
 import os
 import sys
+import json
+import urllib.request
 sys.path.append("%s/lib" % os.getenv("GOPHER_INSTALLDIR"))
 from gopherbot_v2 import Robot
-from github import Github
 
 bot = Robot()
-g = Github(os.getenv("GITHUB_TOKEN"))
+token = os.getenv("GITHUB_TOKEN", '...')
+if token == '...':
+    bot.Log("Error", "GITHUB_TOKEN not found in environment")
+    exit(0)
 
 repodata = bot.GetRepoData()
 
@@ -22,12 +26,23 @@ if not isinstance(repodata, dict):
 # Pop off the executable path
 sys.argv.pop(0)
 
+prefix = "https://api.github.com/repos"
+
 # Retrive repo status memory
 memory = bot.CheckoutDatum("repostats", True)
 if not memory.exists:
     memory.datum = {}
 repostats = memory.datum
 print("Memory is: %s" % repostats)
+
+def fetch_refs(url):
+    print("Fetching refs from '%s'" % url)
+    req = urllib.request.Request(url=url)
+    req.add_header('Authorization', f'token {token}')
+    res = urllib.request.urlopen(req)
+    body = res.read()
+    print("Got: %s" % body)
+    return json.loads(body.decode("utf-8"))
 
 def check_repo(reponame, repoconf):
     _, org, name = reponame.split("/")
@@ -36,11 +51,26 @@ def check_repo(reponame, repoconf):
         repostats[fullname] = {}
     repostat = repostats[fullname]
     print("Checking repo %s" % fullname)
-    repo = g.get_repo(fullname)
-    for b in list(repo.get_branches()):
-        name = b.name
-        branch = repo.get_branch(name)
-        commit = branch.commit.sha
+    refs = {}
+
+    tagurl = "%s/%s/tags" % (prefix, fullname)
+    tags = fetch_refs(tagurl)
+    for t in list(tags):
+        name = t["name"]
+        commit = t["commit"]["sha"]
+        print("Found %s tag %s/%s" % (fullname, name, commit))
+        refs[name] = commit
+
+    branchurl = "%s/%s/branches" % (prefix, fullname)
+    branches = fetch_refs(branchurl)
+    for b in list(branches):
+        name = b["name"]
+        commit = b["commit"]["sha"]
+        print("Found %s branch %s/%s" % (fullname, name, commit))
+        refs[name] = commit
+
+    for name in list(refs):
+        commit = refs[name]
         last = ""
         if name in repostat:
             last = repostat[name]
@@ -52,7 +82,12 @@ def check_repo(reponame, repoconf):
         if build:
             repotype = repoconf["Type"]
             bot.Log("Debug", "Adding primary build for %s (branch %s) to the pipeline, type '%s'" % (reponame, name, repotype))
-            bot.SpawnJob("gopherci", [ "build", reponame, name ])
+            # bot.SpawnJob("gopherci", [ "build", reponame, name ])
+    if len(refs) > 0:
+        for name in list(repostat):
+            if not name in refs:
+                bot.Log("Debug", "Pruning %s from %s, no longer present" % (name, fullname))
+                repostat.pop(name)
 
 for reponame in repodata.keys():
     host, org, name = reponame.split("/")
