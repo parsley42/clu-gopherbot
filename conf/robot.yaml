@@ -145,9 +145,7 @@ ExternalJobs:
     Description: Start a job to sit in the background for a while
     Path: jobs/sleep.sh
   "github-poller":
-    Description: Job for polling GitHub to see if repositories have been updated
-    Path: jobs/github-poller.py
-    NameSpace: github
+    Disabled: false
   "hello":
     Description: Trivial hello world job for testing
     Path: jobs/hello.sh
