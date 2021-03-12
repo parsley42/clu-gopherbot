@@ -1,4 +1,5 @@
 DefaultChannels: [ "general", "random", "chat", "botdev", "clu-jobs" ]
+DefaultJobChannel: "clu-jobs"
 ProtocolConfig:
   EOF: "!quit"
   Abort: "!abort"
@@ -6,5 +7,5 @@ ProtocolConfig:
   - random
   - general
   - chat
-  - botdev
   - clu-jobs
+  - botdev

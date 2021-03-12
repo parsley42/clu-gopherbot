@@ -27,10 +27,12 @@ if not isinstance(repodata, dict):
 sys.argv.pop(0)
 
 prefix = "https://api.github.com/repos"
+first_run = False
 
 # Retrive repo status memory
 memory = bot.CheckoutDatum("repostats", True)
 if not memory.exists:
+    first_run = True
     memory.datum = {}
 repostats = memory.datum
 print("Memory is: %s" % repostats)
@@ -81,8 +83,10 @@ def check_repo(reponame, repoconf):
         print("Found %s / %s: last built: %s, current: %s, build: %s" % (fullname, name, last, commit, build))
         if build:
             repotype = repoconf["Type"]
+            if first_run:
+                bot.Log("Debug", "Skipping primary build for %s (branch %s) to the pipeline, type '%s' (first run)" % (reponame, name, repotype))
             bot.Log("Debug", "Adding primary build for %s (branch %s) to the pipeline, type '%s'" % (reponame, name, repotype))
-            # bot.SpawnJob("gopherci", [ "build", reponame, name ])
+            bot.SpawnJob("gopherci", [ "build", reponame, name ])
     if len(refs) > 0:
         for name in list(repostat):
             if not name in refs:
