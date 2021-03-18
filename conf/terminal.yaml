@@ -1,11 +1,27 @@
+AdminUsers: [ "alice", "parse" ]
+
 DefaultChannels: [ "general", "random", "chat", "botdev", "clu-jobs" ]
 DefaultJobChannel: "clu-jobs"
 ProtocolConfig:
   EOF: "!quit"
   Abort: "!abort"
+  StartChannel: clu-jobs
+  StartUser: parse
   Channels:
   - random
   - general
   - chat
   - clu-jobs
   - botdev
+  AppendUsers:
+  - Name: "parse"
+    Email: "parsley@linuxjedi.org"
+    InternalID: "u0007"
+    FullName: "David Parsley"
+    FirstName: "David"
+    LastName: "Parsley"
+    Phone: "(555)765-0007"
+
+AppendUserRoster:
+- UserName: "parse"
+  UserID: "u0007"
