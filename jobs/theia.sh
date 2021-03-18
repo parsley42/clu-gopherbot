@@ -34,6 +34,7 @@ then
    cat > $HOME/.gitconfig <<EOF
 # This is Git's per-user configuration file, created by jobs/theia.sh;
 # changes will be preserved across restarts of theia.
+# Settings here override those in custom/git/config.
 [user]
         name = $FULL_NAME
         email = $EMAIL
@@ -63,8 +64,26 @@ EOF
 fi
 
 cat > $HOME/stop-theia.sh <<"EOF"
+# Source this in $HOME: ". stop-theia.sh"
 kill $PPID
 EOF
+
+USERNAME=$(GetSenderAttribute name)
+if [ $? -eq $GBRET_Ok ]
+then
+    cat > $HOME/load-personal-key.sh<<EOF
+# Source this in \$HOME: ". load-personal-key.sh"
+if [ ! -e "\$HOME/custom/ssh/$USERNAME-key.enc" ]
+then
+    echo "'\$HOME/custom/ssh/$USERNAME-key.enc' not found."
+else
+    /opt/gopherbot/gopherbot decrypt -f \$HOME/custom/ssh/$USERNAME-key.enc > \$HOME/coding_key
+    chmod 0600 \$HOME/coding_key
+    ssh-add -D
+    ssh-add \$HOME/coding_key
+fi
+EOF
+fi
 
 ln -snf /opt/gopherbot $HOME/robot-defaults || Say "Failed to create symlink $HOME/robot-defaults"
 
