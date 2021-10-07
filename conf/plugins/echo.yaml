@@ -1,2 +1,4 @@
 ---
 AllChannels: true
+ElevatedCommands:
+- echo

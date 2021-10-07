@@ -36,8 +36,8 @@ case "$command" in
 		echo "Hello, world: $1"
 		echo "Hello, error world: $1" >&2
 		Say "$1"
-		FinalTask "email-log"
-		/bin/false
+		# FinalTask "email-log"
+		# /bin/false
 		;;
 	"init")
 		echo "Clu starting up!"

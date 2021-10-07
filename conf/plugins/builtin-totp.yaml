@@ -4,3 +4,6 @@ Config:
   TimeoutSeconds: 7200
   # When 'idle', the timer resets on every elevated command
   TimeoutType: idle # or absolute
+  Users:
+  - User: "parse"
+    Secret: "{{ decrypt "DNIUIpC5dbMSaiSkSYdFGa7ocIIqUkhp6qQE967MdD1JziBNBhQo03oZLDRY5nuBAszsoFtVl4o3nBvG" }}"

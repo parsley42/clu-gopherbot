@@ -21,6 +21,11 @@ head /etc/group >&2
 
 Log "Info" "I said $PHRASE and $NONCE"
 
+Say "I'm a JOB, and I think VERY_SECRET is: $VERY_SECRET"
+SetParameter NOT_VERY_SECRET "$NOT_VERY_SECRET"
+
+AddTask privtest
+AddTask nonprivtest
 AddTask pause-brain
 AddTask say "I've paused my brain !!"
 AddTask exec sleep 3

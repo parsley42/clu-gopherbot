@@ -140,6 +140,13 @@ LoadableModules:
     Description: Memes!
     Path: goplugins/meme.so
 
+ExternalTasks:
+  "privtest":
+    Privileged: true
+    Path: tasks/privtest.sh
+  "nonprivtest":
+    Path: tasks/privtest.sh
+
 ExternalJobs:
   "sleep":
     Description: Start a job to sit in the background for a while
@@ -149,6 +156,9 @@ ExternalJobs:
   "hello":
     Description: Trivial hello world job for testing
     Path: jobs/hello.sh
+    NameSpace: ssh
+    ParameterSets:
+    - verysecret
     Parameters:
     - Name: NONCE
       Value: "No way, Jack!"
@@ -163,6 +173,19 @@ ExternalJobs:
     - Name: REMOTETASK
       Value: status
 
+ParameterSets:
+  "verysecret":
+    Parameters:
+    - Name: "VERY_SECRET"
+      Value: "I swear I won't tell ANYBODY"
+    - Name: "NOT_VERY_SECRET"
+      Value: "You really shouldn't publish this!"
+  "github-token":
+    Description: "GitHub token for performing a variety of tasks"
+    Parameters:
+    - Name: "GITHUB_TOKEN"
+      Value: "{{ decrypt "fdpNIcQnOD0GrlOeQbUfPB0i6iGp+cqn3WPWRum/Ycl/IJZeVsFYFlJjoNhXITTl0TNWJZ8HjUw1jfvjbGr24ENmFUo=" }}"
+
 NameSpaces:
   "ssh":
     Parameters:
@@ -170,20 +193,12 @@ NameSpaces:
       Value: "robot_key"
     - Name: BOT_SSH_PHRASE
       Value: {{ decrypt "CBow8Kg/9iynxBQFWru+EdWAookX7ERVKcUuLEIp9NDZcpm/QDChILq9p0/2X2dCB7gIrJ4=" }}
-  "github":
-    Parameters:
-    - Name: "GITHUB_TOKEN"
-      Value: "{{ decrypt "yBJE1oAvpE0E8KAasJROSuDDaBQQqpG+nXttWaod1fE3zx5wkN9pw4p+qtQBTBOSo61LqRFBQNlwHem0HPNorfWjZ6Y=" }}"
   "manage":
     AppendParameters:
     - Name: "KEYNAME"
       Value: "manage_key"
     - Name: BOT_SSH_PHRASE
       Value: {{ decrypt "CBow8Kg/9iynxBQFWru+EdWAookX7ERVKcUuLEIp9NDZcpm/QDChILq9p0/2X2dCB7gIrJ4=" }}
-  "github":
-    Parameters:
-    - Name: "GITHUB_TOKEN"
-      Value: "{{ decrypt "fdpNIcQnOD0GrlOeQbUfPB0i6iGp+cqn3WPWRum/Ycl/IJZeVsFYFlJjoNhXITTl0TNWJZ8HjUw1jfvjbGr24ENmFUo=" }}"
 
 DefaultMessageFormat: Raw
 # Users the bot should never listen to
@@ -213,4 +228,4 @@ MailConfig:
 ## - Configure the elevator by overriding the config for the plugin in
 ##   'conf/plugins/totp.yaml'
 
-#DefaultElevator: totp
+DefaultElevator: builtin-totp
