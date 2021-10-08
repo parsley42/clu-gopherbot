@@ -127,6 +127,9 @@ ExternalPlugins:
   "echo":
     Description: Trivial bash plugin
     Privileged: true
+    NameSpace: ssh
+    ParameterSets:
+    - verysecret
     Path: plugins/echo.sh
   "pythondemo":
     Description: Sample python plugin

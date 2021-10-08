@@ -54,5 +54,11 @@ case "$command" in
 		else
 			Reply "$REPEAT"
 		fi
+		# Yah, this makes no sense for repeat - but Clu is a test/debug bot!
+		Say "I'm a PLUGIN, and I think VERY_SECRET is: $VERY_SECRET"
+		SetParameter NOT_VERY_SECRET "$NOT_VERY_SECRET"
+
+		AddTask privtest
+		AddTask nonprivtest
 		;;
 esac
