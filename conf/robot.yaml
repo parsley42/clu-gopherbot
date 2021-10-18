@@ -90,19 +90,19 @@ DefaultJobChannel: {{ env "GOPHER_JOBCHANNEL" | default $defaultjobchannel }}
 #DefaultMessageFormat: Variable # 'Raw' if not specified
 
 # Job scheduling with github.com/robfig/cron, seconds required
-{{ if ne $proto "terminal" }}
 ScheduledJobs:
+{{ if ne $proto "terminal" }}
+# These jobs don't run in the terminal connector
 - Name: backup
   Schedule: "@every 1m"
 - Name: logrotate
   Schedule: "0 1 0 * * *"
+{{ end }}
+# These jobs run even in the terminal connector
 - Name: "pause-notifies"
   Schedule: "0 0 8 * * *"
-{{ end }}
-# - Name: hello
-#   Schedule: "@every 30s" # see: https://godoc.org/github.com/robfig/cron
-#   Arguments: # an array of strings; up to the job to parse numbers & bools
-#   - "Hello, World !!!"
+- Name: init
+  Schedule: "@init" # special Gopherbot syntax, run job during init
 # - Name: hello
 #   Schedule: "@every 35s" # see: https://godoc.org/github.com/robfig/cron
 #   Arguments: # an array of strings; up to the job to parse numbers & bools
@@ -165,6 +165,11 @@ ExternalJobs:
     Parameters:
     - Name: NONCE
       Value: "No way, Jack!"
+  "init":
+    Description: Init job for decrypting a file during startup
+    # Needs to be homed to see custom/ and the binary encryption key
+    Homed: true
+    Path: jobs/init.sh
   "logrotate":
     Path: jobs/logrotate.sh
   "nowhere":
