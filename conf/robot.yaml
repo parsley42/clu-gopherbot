@@ -147,8 +147,10 @@ ExternalTasks:
   "privtest":
     Privileged: true
     Path: tasks/privtest.sh
+    NameSpace: manage
   "nonprivtest":
     Path: tasks/privtest.sh
+    NameSpace: manage
 
 ExternalJobs:
   "sleep":
