@@ -1,25 +1,25 @@
 # Clu
+
+> Up-to-date with v2.4; Nov. '21
+
 `Clu` is the Gopherbot development robot that runs wherever I need him, and tracks with ongoing development of **Gopherbot**. This repository represents almost everything I need to run Clu; the only other bits:
-* clu-private (private repository) - Clu's `private/environment` - an environment file, which should be mode `0600` and closely guarded (see below for example contents); the contents of this file is normall stored in e.g. a password / secret manager, and includes Clu's encryption key
+* Clu's `.env` file with his brain decryption key and other required env vars; this is kept in a password manager
 * robot-state branch - Separate branch of this repository for backing up Clu's memories; should always remain separate from `master`, etc.
 * Clu's repository has two deploy keys configured:
    * `deploy_rsa.pub` is a read-only deploy key for bootstrapping Clu in to a new running environment, such as a newly built VM or container
    * `manage_rsa.pub` is a dedicated encrypted key that Clu uses for managing his own repository; used, for instance, for backing up long-term memories to the `robot-state` branch
 
-`Clu`'s custom configuration will form the basis for new robot configuration, the contents of [robot.skel](https://github.com/lnxjedi/gopherbot/tree/master/robot.skel). At times, `Clu`'s configuration may be _ahead_ of master, when it represents a development target.
+`Clu`'s custom configuration formed the basis for new robot configuration, the contents of [robot.skel](https://github.com/lnxjedi/gopherbot/tree/master/robot.skel).
 
 ## Directory Structure
 
-This is the directory structure of a well-formed robot, created when I run `../gopherbot/fetch-robot.sh clu`:
+This is the directory structure of a well-formed robot, when run directly on a host:
 
 * `clu/` - Top-level directory, not a git repo
     * `gopherbot` - symlink to `/opt/gopherbot/gopherbot`
-    * `terminal.sh` - convenience script for running `clu` with the terminal connector
-    * `custom/` - clone of `parsley42/clu-gopherbot`, custom configuration repository
-    * `state/` - clone of `parsley42/clu-gopherbot`, `robot-state` branch, where clu saves state, e.g. memories
-    * `private/` - clone of `parsley42/clu-private`, a private repository containing only `environment`
-    * `Makefile` - a set of targets for running clu in a local container; see [Running Clu](#running-clu)
-    * `environment` - a symlink to `private/environment` or `.env` if fetched from a `.env` file; see [Fetching Clu](#fetching-clu)
+    * `custom/` - clone of `parsley42/clu-gopherbot`, custom configuration repository populated during bootstrapping
+    * `state/` - clone of `parsley42/clu-gopherbot`, `robot-state` branch, where clu saves state, e.g. memories - also populated during bootstrapping
+    * `.env` - environment variables required for Clu to bootstrap and run
 
 The environment file is only:
 ```shell
@@ -36,68 +36,21 @@ $ cat deploy_rsa | tr ' \n' '_:'
 -----BEGIN_OPENSSH_PRIVATE_KEY-----:b3Bl...W4B:-----END_OPENSSH_PRIVATE_KEY-----:
 ```
 
-## Fetching Clu
-
-The `fetch-robot.sh` script will create the above directory structure. There are two ways I can run `gopherbot/fetch-robot.sh` to fetch **Clu**:
-
-### Fetching with `.env`
-If I create an empty directory for Clu and stick the above environment in a `.env` file in that directory, I can just:
-```shell
-$ cd clu
-$ /opt/gopherbot/fetch-robot.sh
-```
-... that will read the `.env` and create the directory structure [above](#directory-structure). This will work for any well-formed robot.
-
-### Fetching during development
-Because I do most of my development in a `github.com/parsley42/gopherbot` fork, and Clu's repositories are *also* parented by `github.com/parsley42`, I can fetch **Clu** with the developer shortcut mode of `fetch-robot.sh`:
-```shell
-$ ./gopherbot/fetch-robot.sh clu
-```
-This requires not only that it be run from a forked **Gopherbot** repository, but that the development robot has a private repository (e.g. `clu-private`) with it's environment file (containing the required `GOPHER_ENCRYPTION_KEY`). It's definitely the fastest way for me to get up and going, though.
-
 ## Running Clu
-One of the main goals for **Gopherbot** version 2 was robot portability and first-class container support. Given the new feature set, there are several ways I can start **Clu**.
+One of the main goals for **Gopherbot** version 2 was robot portability and first-class container support. Given the new feature set, there are a couple ways I can start **Clu**.
 
-Worth noting here is how **Gopherbot** get's it's environment. The first and most obvious is from the environment exported from the parent process, as is the case when starting in a container. Second, on startup, **Gopherbot** first looks for `private/environment`, then `.env`, and loads the first one if finds, overwriting the current environment.
+Worth noting here is how **Gopherbot** get's it's environment. The first and most obvious is from the environment exported from the parent process, as is the case when starting in a container. Second, on startup, **Gopherbot** looks for `.env`, overwriting the current environment.
 
-### I can start that robot with THREE environment variables
-(... for anybody who remembers the old "Name That Tune" game show)
+### Using the `.env` file
 
-Since Clu's primary configuration repository is publicly available, I can start in a directory with this `.env` file:
+This is the most common way I run **Clu** when doing development on **Gopherbot**. I create an empty directory (normally just called 'clu'), and drop a `.env` file in it with the contents from the password manager. Then I symlink the `gopherbot` binary there, and run `./gopherbot`. The **bootstrap** plugin does the rest.
+
+### Using `gb-dev-profile` and `gb-start-dev`
+
+This is how I start **Clu** when I'm actually working on Clu's configuration - the way a **Gopherbot** user would normally configure and write extensions for their robot.
+
+* The `gb-dev-profile` script generates a custom `clu.env` file that includes an encoded version of my local ssh private key
 ```shell
-GOPHER_ENCRYPTION_KEY=<redacted>
-GOPHER_PROTOCOL=slack
-GOPHER_CUSTOM_REPOSITORY=https://github.com/parsley42/clu-gopherbot.git
+$ gb-dev-profile clu/.env > clu.env
 ```
-Note that this is closer to how I would run **Clu** in a production container or vm, without using `fetch-robot.sh`, though I would likely use a deploy key as shown above in production.
-
-**Method 1** Local Install
-```shell
-$ /opt/gopherbot/gopherbot 
-2020/01/06 11:53:02 Initialized logging ...
-... (clone, restart, and restore brain) ...
-2020/01/06 11:53:07 Info: Robot is initialized and running
-```
-After which you'll have a basic directory structure with `GOPHER_CUSTOM_REPOSITORY` in `custom/`, and `GOPHER_STATE_REPOSITORY` (defined in `custom/conf/robot.yaml`) restored in to `state/`.
-
-**Method 2** Run in container with Docker
-```shell
-$ docker run --env-file .env lnxjedi/gopherbot:latest
-2020/01/06 11:53:02 Initialized logging ...
-... (clone, restart, and restore brain) ...
-2020/01/06 11:53:07 Info: Robot is initialized and running
-```
-This accomplishes the same as above, only `custom/` and `state/` are created in the container's `/home/robot` directory.
-
-### Using `fetch-robot`
-Most of the time when I'm doing development, I just use `fetch-robot.sh` like so:
-```shell
-$ ./gopherbot/fetch-robot.sh clu
-$ cd clu
-$ ./gopherbot
-2020/01/06 11:53:02 Initialized logging ...
-... (normal startup, custom/ and state/ already present) ...
-2020/01/06 11:53:07 Info: Robot is initialized and running
-```
-
-Since `fetch-robot.sh` also copies the sample container `Makefile` from `gopherbot/resources/docker`, I can also use e.g. `make prod`, `make dev` and `make debug` targets to start **Clu** 
+* The `gb-start-dev` script starts the [gopherbot-theia](https://quay.io/repository/lnxjedi/gopherbot-theia) container. Once the robot has started, I tell Clu `!start-theia`, then connect to [localhost:3000](http://localhost:3000).
