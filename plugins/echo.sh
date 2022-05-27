@@ -35,7 +35,7 @@ case "$command" in
 		Pause 1 # because the robot knows how to "type"
 		echo "Hello, world: $1"
 		echo "Hello, error world: $1" >&2
-		Say "You told me to say '$1'"
+		Say "You *told* me to _say_ '$1'"
 		# FinalTask "email-log"
 		# /bin/false
 		;;

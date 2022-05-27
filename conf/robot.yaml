@@ -131,6 +131,9 @@ ExternalPlugins:
     ParameterSets:
     - verysecret
     Path: plugins/echo.sh
+  "format":
+    Decription: Plugin that exercises message formats
+    Path: plugins/format.sh
   "pythondemo":
     Description: Sample python plugin
     Path: plugins/samples/pythondemo.py
