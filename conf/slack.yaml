@@ -12,7 +12,7 @@ AdminUsers: [ "parsley", "adrienne" ]
 
 ProtocolConfig:
   MaxMessageSplit: {{ env "GOPHER_SLACK_MAX_MSGS" | default "2" }}
-  SlackToken: xoxb-{{ decrypt "dkJ0hi/kG0NRoveoMwAMeN9/3VDcPQgjQRumTojZSUA0VeiHa5YHoR4SbxCRxI/HWN9gW7z3V+JM8rvE7E6+IK+EVBjPm4nL2h29S9RX" }}
+  SlackToken: xoxb-{{ decrypt "nXwlHVjFJkRFzLPi7LbSXkKArgKwYu5llOmjzWlDwikyGvbUqVLwzr4mp8yUMtMqGStBE7Nu0cK1oTKcJhqrV2/08S/aV2dhKDmD7eQk" }}
 
 DefaultChannels: [ "general", "random", "chat", "botdev", "clu-jobs" ]
 DefaultJobChannel: "clu-jobs"
