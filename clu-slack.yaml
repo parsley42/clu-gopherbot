@@ -7,7 +7,7 @@ display_information:
   description: Clu tries all the new, dangerous and/or breaking changes to Gopherbot.
 features:
   app_home:
-    home_tab_enabled: true
+    home_tab_enabled: false
     messages_tab_enabled: true
     messages_tab_read_only_enabled: false
   bot_user:
