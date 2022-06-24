@@ -46,7 +46,6 @@ settings:
   event_subscriptions:
     bot_events:
       - member_joined_channel
-      - message
       - message.app_home
       - message.channels
       - message.groups
