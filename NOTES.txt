@@ -2,6 +2,26 @@
 # Using slack/examples/socketmode/socketmode.go with Clu's app and bot tokens
 
 # Log outputs
+####### Initial 'hello'
+socketmode: 2022/06/28 07:49:07 socket_mode_managed_conn.go:438: Starting to receive message
+socketmode: 2022/06/28 07:49:07 socket_mode_managed_conn.go:480: Incoming WebSocket message: {
+  "type": "hello",
+  "num_connections": 2,
+  "debug_info": {
+    "host": "applink-6bdc57fdcb-h5b5m",
+    "build_number": 9,
+    "approximate_connection_time": 18060
+  },
+  "connection_info": {
+    "app_id": "A03LNJK32J3"
+  }
+}
+
+socketmode: 2022/06/28 07:49:07 socket_mode_managed_conn.go:492: Finished to receive message
+socketmode: 2022/06/28 07:49:07 socket_mode_managed_conn.go:438: Starting to receive message
+socketmode: 2022/06/28 07:49:07 socket_mode_managed_conn.go:335: Received WebSocket message: {"type":"hello","num_connections":2,"debug_info":{"host":"applink-6bdc57fdcb-h5b5m","build_number":9,"approximate_connection_time":18060},"connection_info":{"app_id":"A03LNJK32J3"}}
+Unexpected event type received: hello
+
 ####### Sending "/clu blip" in botdev channel
 socketmode: 2022/06/24 13:49:03 socket_mode_managed_conn.go:480: Incoming WebSocket message: {
   "envelope_id": "9b3b201c-15a7-4a0d-ad53-4535506346b5",
