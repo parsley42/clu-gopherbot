@@ -13,6 +13,8 @@ ProtocolConfig:
   - chat
   - clu-jobs
   - botdev
+  - ruby
+  - python
   AppendUsers:
   - Name: "parse"
     Email: "parsley@linuxjedi.org"

@@ -137,6 +137,9 @@ ExternalPlugins:
   "pythondemo":
     Description: Sample python plugin
     Path: plugins/samples/pythondemo.py
+  "rubydemo":
+    Description: Sample ruby plugin
+    Path: plugins/samples/rubydemo.rb
 
 ExternalTasks:
   "privtest":
