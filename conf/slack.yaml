@@ -3,6 +3,9 @@ UserRoster:
 - UserName: floyd
   UserID: U138KTVCL
   BotUser: true
+- UserName: clu
+  UserID: U03MFS3PHMF
+  BotUser: true
 - UserName: adrienne
   UserID: U0JM3H95G
 - UserName: parsley
@@ -17,6 +20,7 @@ ProtocolConfig:
 {{ else }}
   AppToken: {{ decrypt "ElZYmgds5BA52QVjjd/c/Dw13cRvk6X72TuMNoVSjM6MxMU03p+NLBCzhN8dxy4zTLXyadPwkLoiwOYMFAotf+W1THeMFDKsCxTAx/H7KBIlqZO860bGbNiVqxV+kVgV+rgrmDmgSjGw1dWZIyoqzmR1ooJ5MFVjl/3oYYI=" }}
   BotToken: {{ decrypt "tcxZB6aQK5htxBVGBz84kOMJfZrYfynv65mfDUbHfAPYl7OKNaZSL5ifGiJqzQ0oQz3ptRbv+VsSnsDnMlq4GftpAvY+SPsMkz9vPyNOuOdJWlw=" }}
+  HearSelf: true
 {{ end}}
 
 DefaultChannels: [ "general", "random", "chat", "botdev", "clu-jobs" ]
