@@ -35,6 +35,8 @@ case "$command" in
 		echo "Hello, world: $1"
 		echo "Hello, error world: $1" >&2
 		Say "You *told* me to _say_ '$1'"
+		BOTID=$(GetBotAttribute id)
+		Say "I think my ID is $BOTID"
 		AddTask "say" "I said it, alright!"
 		AddTask "status" "I gave status, alright!"
 		# FinalTask "email-log"
