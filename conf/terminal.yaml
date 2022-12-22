@@ -5,6 +5,8 @@ DefaultJobChannel: "clu-jobs"
 ProtocolConfig:
   EOF: "!quit"
   Abort: "!abort"
+  HearSelf: true
+  BotName: 'clu'
   StartChannel: clu-jobs
   StartUser: parse
   Channels:
@@ -27,3 +29,6 @@ ProtocolConfig:
 AppendUserRoster:
 - UserName: "parse"
   UserID: "u0007"
+- UserName: "clu"
+  UserID: "u0000"
+  BotUser: true
