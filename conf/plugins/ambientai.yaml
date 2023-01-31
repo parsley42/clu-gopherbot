@@ -1,0 +1,13 @@
+Channels:
+- ai
+AllowDirect: false
+Help:
+- Keywords: [ "ai", "prompt", "query" ]
+  Helptext:
+  - "<query> - Start or continue a threaded conversation with OpenAI (all messages in channel)"
+MessageMatchers:
+- Command: 'ambient'
+  Regex: '(^[^!;\-%~*+^\$?[\]{}][\s\S]*)'
+Config:
+  AmbientChannel: "ai"
+{{ .Include "../aicfg.yaml" }}

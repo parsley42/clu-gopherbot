@@ -109,6 +109,21 @@ ScheduledJobs:
 #   - "Goodbye, World !!!"
 
 ExternalPlugins:
+  "ai":
+    Path: plugins/ai.rb
+    Description: A trivial plugin wrapping the OpenAI completions API
+    ParameterSets:
+    - "openai"
+  "ambientai":
+    Path: plugins/ai.rb
+    Description: A trivial plugin wrapping the OpenAI completions API
+    ParameterSets:
+    - "openai"
+  "directai":
+    Path: plugins/ai.rb
+    Description: A trivial plugin wrapping the OpenAI completions API
+    ParameterSets:
+    - "openai"
   "bootstrap":
     Parameters: # clear bootstrap parameters once configured
   "weather":
@@ -196,6 +211,10 @@ ParameterSets:
     Parameters:
     - Name: "GITHUB_TOKEN"
       Value: "{{ decrypt "fdpNIcQnOD0GrlOeQbUfPB0i6iGp+cqn3WPWRum/Ycl/IJZeVsFYFlJjoNhXITTl0TNWJZ8HjUw1jfvjbGr24ENmFUo=" }}"
+  "openai":
+    Parameters:
+    - Name: OPENAI_KEY
+      Value: sk-{{ decrypt "NZZ98pAamqNd/URrJ+qhU2D1KTZThwcsVLdiu0E+a/b6e69Z4gq4TdKq+SMFsBUhk1As2tqoSJS9Wd1yK6WJsssZYzDy9yIWc5x6bQ==" }}
 
 NameSpaces:
   "ssh":
