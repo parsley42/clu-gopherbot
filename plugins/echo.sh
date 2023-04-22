@@ -21,8 +21,14 @@ Help:
 CommandMatchers:
 - Command: "repeat"
   Regex: '(?i:repeat( me)?)'
+## This will match the collapsed version of the message;
+## 'hello\nworld' will echo 'hello world'
 - Command: "echo"
-  Regex: '(?i:echo (.*))'
+  Regex: '(?i:echo ([^\n]*))'
+## This will match the full message; 'hello\nworld' will echo
+## 'hello\nworld'
+- Command: "echo"
+  Regex: '(?i:necho (.*))'
 EOF
 }
 

@@ -6,6 +6,7 @@ ProtocolConfig:
   EOF: "!quit"
   Abort: "!abort"
   HearSelf: true
+  GenerateNewlines: true
   BotName: 'clu'
   StartChannel: clu-jobs
   StartUser: parse
@@ -17,6 +18,7 @@ ProtocolConfig:
   - botdev
   - ruby
   - python
+  - deadzone
   AppendUsers:
   - Name: "parse"
     Email: "parsley@linuxjedi.org"
