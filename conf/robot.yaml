@@ -114,16 +114,6 @@ ExternalPlugins:
     Description: A trivial plugin wrapping the OpenAI completions API
     ParameterSets:
     - "openai"
-  "ambientai":
-    Path: plugins/ai.rb
-    Description: A trivial plugin wrapping the OpenAI completions API
-    ParameterSets:
-    - "openai"
-  "directai":
-    Path: plugins/ai.rb
-    Description: A trivial plugin wrapping the OpenAI completions API
-    ParameterSets:
-    - "openai"
   "bootstrap":
     Parameters: # clear bootstrap parameters once configured
   "weather":
@@ -214,7 +204,7 @@ ParameterSets:
   "openai":
     Parameters:
     - Name: OPENAI_KEY
-      Value: sk-{{ decrypt "NZZ98pAamqNd/URrJ+qhU2D1KTZThwcsVLdiu0E+a/b6e69Z4gq4TdKq+SMFsBUhk1As2tqoSJS9Wd1yK6WJsssZYzDy9yIWc5x6bQ==" }}
+      Value: "{{ decrypt "Wr74TfPqRTF3lRYuxk/wlSrFJYsj9Ril9DyS0HoQ/KcbUXStRarnwAl+++Z1usAAkI6MOxcicEpKtq0XEKynRe8y4j2Nx/luSKUQg0by0g==" }}"
 
 NameSpaces:
   "ssh":
