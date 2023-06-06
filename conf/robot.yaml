@@ -91,6 +91,8 @@ DefaultJobChannel: {{ env "GOPHER_JOBCHANNEL" | default $defaultjobchannel }}
 
 # Job scheduling with github.com/robfig/cron, seconds required
 ScheduledJobs:
+- Name: install-libs
+  Schedule: "@init"
 {{ if ne $proto "terminal" }}
 # These jobs don't run in the terminal connector
 - Name: backup
