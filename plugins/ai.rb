@@ -59,8 +59,7 @@ when "ambient", "catchall", "subscribed"
   end
   type = ai.status.in_progress ? "continuing" : "starting"
   bot.Log(:debug, "#{type} AI conversation with #{ENV["GOPHER_USER"]} in #{ENV["GOPHER_CHANNEL"]}/#{ENV["GOPHER_THREAD_ID"]}")
-  aibot, reply = ai.query(prompt)
-  aibot.Say(reply)
+  ai.query(prompt)
 when "close"
   ai = OpenAI_API.new(bot, direct: direct, botalias: botalias, botname: botname)
   unless ai.status.valid

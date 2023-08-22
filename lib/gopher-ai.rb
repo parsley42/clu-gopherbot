@@ -104,6 +104,13 @@ class OpenAI_API
     end
   end
 
+  def say_chunk(chunk)
+    if ENV["GOPHER_PROTOCOL"] == "slack"
+      chunk = chunk.gsub(/```\w+\n/) { |language| "#{language[3..-2]}:\n```\n" }
+    end
+    @bot.Say(chunk)
+  end
+
   def query(input)
     input = "#{@bot.user} says: #{input}"
     while true
@@ -115,6 +122,8 @@ class OpenAI_API
         @bot.Say("Chat (lines truncated):\n#{partial}", :fixed)
       end
       parameters[:messages] = messages
+      accumulated_chunks = ""
+      parameters[:stream] = 
       response = @client.chat(parameters: parameters)
       if response["error"]
         message = response["error"]["message"]
@@ -154,7 +163,7 @@ class OpenAI_API
     if ENV["GOPHER_PROTOCOL"] == "slack"
       aitext = aitext.gsub(/```\w+\n/) { |language| "#{language[3..-2]}:\n```\n" }
     end
-    return @bot, aitext
+    @bot.Say(aitext)
   end
 
   def build_messages(input)
