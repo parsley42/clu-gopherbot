@@ -104,9 +104,15 @@ class OpenAI_API
     end
   end
 
-  def say_chunk(chunk)
+  def say_chunk(chunk, final = false)
     if ENV["GOPHER_PROTOCOL"] == "slack"
       chunk = chunk.gsub(/```\w+\n/) { |language| "#{language[3..-2]}:\n```\n" }
+    end
+    chunk.chomp!
+    chunk.strip!
+    return if chunk == ""
+    unless final
+      chunk += " (...)"
     end
     @bot.Say(chunk)
   end
@@ -122,48 +128,62 @@ class OpenAI_API
         @bot.Say("Chat (lines truncated):\n#{partial}", :fixed)
       end
       parameters[:messages] = messages
+      reply = ""
       accumulated_chunks = ""
-      parameters[:stream] = 
-      response = @client.chat(parameters: parameters)
-      if response["error"]
-        message = response["error"]["message"]
-        if message.match?(/tokens/i)
-          @exchanges.shift
-          @bot.Log(:warn, "token error, dropping an exchange and re-trying")
-          next
+      replied = false
+  
+      parameters[:stream] = proc do |chunk, _bytesize|
+        # @bot.Log(:debug, "Chunk: #{chunk}")
+        if chunk["choices"]
+          content = chunk["choices"][0]["delta"]["content"] ? chunk["choices"][0]["delta"]["content"] : ""
+          finished = chunk["choices"][0]["finish_reason"]
+          unless finished
+            replied = true
+            reply += content
+            accumulated_chunks += content
+            paragraph, remaining = accumulated_chunks.split("\n", 2)
+            if accumulated_chunks.include?("\n")
+              paragraph, remaining = accumulated_chunks.split("\n", 2)
+              say_chunk(paragraph)
+              accumulated_chunks = remaining || ""
+            end
+          end
         end
-        @bot.SayThread("Sorry, there was an error - '#{message}'")
-        @bot.Log(:error, "connecting to openai: #{message}")
+      end
+  
+      @client.chat(parameters: parameters)
+      
+      ## NOTE: This is an ugly hack because the library doesn't
+      ## return errors in streaming mode. :-(
+      unless replied
+        parameters.delete(:stream)
+        response = @client.chat(parameters: parameters)
+        if response["error"]
+          message = response["error"]["message"]
+          if message.match?(/tokens/i)
+            @exchanges.shift
+            @bot.Log(:warn, "token error, dropping an exchange and re-trying")
+            next
+          end
+          @bot.SayThread("Sorry, there was an error - '#{message}'")
+          @bot.Log(:error, "connecting to openai: #{message}")
+        else
+          @bot.Log(:error, "Response after no streaming data: #{response}")
+        end
         exit(0)
       end
-      break
-    end
-    aitext = response["choices"][0]["message"]["content"].lstrip
-    if @debug
-      ## This monkey business is because .to_json was including
-      ## items removed with .delete(...). ?!?
-      rdata = {}
-      response.each_key do |key|
-        next if key == "choices"
-        rdata[key] = response[key]
+  
+      say_chunk(accumulated_chunks, true) if accumulated_chunks.length > 0
+      reply.strip!
+      if input.length > 0
+        @exchanges << {
+          "human" => input,
+          "ai" => reply
+        }
       end
-      @bot.Say("Response data: #{rdata.to_json}", :fixed)
+      @bot.Remember(@memory, encode_state, true)
+      break # Exit the loop when no token error occurred
     end
-    usage = response["usage"]
-    @bot.Log(:debug, "usage: prompt #{usage["prompt_tokens"]}, completion #{usage["completion_tokens"]}, total #{usage["total_tokens"]}")
-    aitext.strip!
-    if input.length > 0
-      @exchanges << {
-        "human" => input,
-        "ai" => aitext
-      }
-    end
-    @tokens = usage["total_tokens"]
-    @bot.Remember(@memory, encode_state, true)
-    if ENV["GOPHER_PROTOCOL"] == "slack"
-      aitext = aitext.gsub(/```\w+\n/) { |language| "#{language[3..-2]}:\n```\n" }
-    end
-    @bot.Say(aitext)
   end
 
   def build_messages(input)
