@@ -103,8 +103,8 @@ ScheduledJobs:
 # These jobs run even in the terminal connector
 - Name: "pause-notifies"
   Schedule: "0 0 8 * * *"
-- Name: init
-  Schedule: "@init" # special Gopherbot syntax, run job during init
+# - Name: init
+#   Schedule: "@init" # special Gopherbot syntax, run job during init
 # - Name: hello
 #   Schedule: "@every 35s" # see: https://godoc.org/github.com/robfig/cron
 #   Arguments: # an array of strings; up to the job to parse numbers & bools
