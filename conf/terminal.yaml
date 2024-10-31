@@ -1,10 +1,9 @@
 AdminUsers: [ "alice", "parse" ]
 
 DefaultChannels: [ "general", "random", "chat", "botdev", "clu-jobs" ]
-DefaultJobChannel: "clu-jobs"
 ProtocolConfig:
-  EOF: "!quit"
-  Abort: "!abort"
+  EOF: '!quit'
+  Abort: '!abort'
   HearSelf: true
   GenerateNewlines: true
   BotName: 'clu'

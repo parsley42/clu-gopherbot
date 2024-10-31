@@ -32,7 +32,7 @@ BotInfo:
   FirstName: {{ $botname }}
   LastName: Gopherbot
 
-Alias: "{{ $botalias }}"
+Alias: '{{ $botalias }}'
 
 # Brain configuration; this can all be replaced with static configuration
 # and encrypted secrets for most robots.
@@ -142,7 +142,7 @@ ExternalPlugins:
     - verysecret
     Path: plugins/echo.sh
   "format":
-    Decription: Plugin that exercises message formats
+    Description: Plugin that exercises message formats
     Path: plugins/format.sh
   "pythondemo":
     Description: Sample python plugin
@@ -164,8 +164,6 @@ ExternalJobs:
   "sleep":
     Description: Start a job to sit in the background for a while
     Path: jobs/sleep.sh
-  "github-poller":
-    Disabled: false
   "hello":
     Description: Trivial hello world job for testing
     Path: jobs/hello.sh
