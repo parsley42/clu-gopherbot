@@ -116,8 +116,6 @@ ExternalPlugins:
     Description: A trivial plugin wrapping the OpenAI completions API
     ParameterSets:
     - "openai"
-  "bootstrap":
-    Parameters: # clear bootstrap parameters once configured
   "weather":
     Description: A plugin that uses OpenWeatherMap to report the weather
     Path: plugins/weather.rb
