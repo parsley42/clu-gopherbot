@@ -38,7 +38,7 @@ case "$command" in
 		configure
 		;;
 	"echo")
-		echo "Hello, world: $1"
+		echo "Hello, brave new world: $1"
 		echo "Hello, error world: $1" >&2
 		Say "You *told* me to _say_ '$1'"
 		BOTID=$(GetBotAttribute id)
