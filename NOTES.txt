@@ -181,4 +181,4 @@ socketmode: 2022/06/24 14:36:45 socket_mode_managed_conn.go:311: Sending Socket 
 socketmode: 2022/06/24 14:36:45 socket_mode_managed_conn.go:320: Finished sending Socket Mode response with envelope ID "92648181-1c09-4248-97fd-893ebeadbdd1"
 
 
-Hello, world!
+Hello, world! (Goodbye, sanity)
