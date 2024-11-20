@@ -54,3 +54,4 @@ This is how I start **Clu** when I'm actually working on Clu's configuration - t
 $ gb-dev-profile clu/.env > clu.env
 ```
 * The `gb-start-dev` script starts the [gopherbot-theia](https://quay.io/repository/lnxjedi/gopherbot-theia) container. Once the robot has started, I tell Clu `!start-theia`, then connect to [localhost:3000](http://localhost:3000).
+Hello, world!
