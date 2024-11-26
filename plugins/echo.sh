@@ -29,6 +29,8 @@ CommandMatchers:
 ## 'hello\nworld'
 - Command: "echo"
   Regex: '(?i:necho (.*))'
+AllowedHiddenCommands:
+- echo
 EOF
 }
 
@@ -45,6 +47,14 @@ case "$command" in
 		Say "I think my ID is $BOTID"
 		AddTask "say" "I said it, alright!"
 		AddTask "status" "I gave status, alright!"
+		ANSWER=$(PromptUserForReply SimpleString parsley "Tell me anything")
+		RETVAL=$?
+		if [ $RETVAL -ne $GBRET_Ok ]
+		then
+			Reply "Sorry, I had a problem getting your reply: $RETVAL"
+		else
+			Reply "You said: $ANSWER"
+		fi
 		# FinalTask "email-log"
 		# /bin/false
 		;;
