@@ -1,4 +1,4 @@
-AdminUsers: [ "alice", "parse" ]
+AdminUsers: [ "alice", "parsley" ]
 
 DefaultChannels: [ "general", "random", "chat", "botdev", "clu-jobs" ]
 ProtocolConfig:
@@ -8,7 +8,7 @@ ProtocolConfig:
   GenerateNewlines: true
   BotName: 'clu'
   StartChannel: clu-jobs
-  StartUser: parse
+  StartUser: parsley
   Channels:
   - random
   - general
@@ -19,7 +19,7 @@ ProtocolConfig:
   - python
   - deadzone
   AppendUsers:
-  - Name: "parse"
+  - Name: "parsley"
     Email: "parsley@linuxjedi.org"
     InternalID: "u0007"
     FullName: "David Parsley"
@@ -28,7 +28,7 @@ ProtocolConfig:
     Phone: "(555)765-0007"
 
 AppendUserRoster:
-- UserName: "parse"
+- UserName: "parsley"
   UserID: "u0007"
 - UserName: "clu"
   UserID: "u0000"
