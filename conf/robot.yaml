@@ -142,6 +142,9 @@ ExternalPlugins:
   "format":
     Description: Plugin that exercises message formats
     Path: plugins/format.sh
+  "luademo":
+    Description: Sample lua plugin
+    Path: plugins/samples/demo.lua
   "pythondemo":
     Description: Sample python plugin
     Path: plugins/samples/pythondemo.py
