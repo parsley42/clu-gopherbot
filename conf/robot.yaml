@@ -145,7 +145,10 @@ ExternalPlugins:
   "luademo":
     Description: Sample lua plugin
     Path: plugins/samples/demo.lua
-    # Privileged: true
+    Privileged: true
+  "luahello":
+    Description: Lua Hello World / boilerplate
+    Path: plugins/samples/hello.lua
   "pythondemo":
     Description: Sample python plugin
     Path: plugins/samples/pythondemo.py
