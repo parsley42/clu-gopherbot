@@ -149,6 +149,9 @@ ExternalPlugins:
   "luahello":
     Description: Lua Hello World / boilerplate
     Path: plugins/samples/hello.lua
+  "jshello":
+    Description: JavaScript Hello World / boilerplate
+    Path: plugins/samples/hello.js
   "pythondemo":
     Description: Sample python plugin
     Path: plugins/samples/pythondemo.py
