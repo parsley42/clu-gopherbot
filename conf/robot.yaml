@@ -6,6 +6,7 @@
 AdminContact: "David Parsley, <parsley@linuxjedi.org>"
 IgnoreUsers: [ "floyd", "bender" ]
 IgnoreUnlistedUsers: true
+SecureParameters: true
 
 ## Configure the robot connection protocol
 {{ $proto := env "GOPHER_PROTOCOL" | default "terminal" }}
