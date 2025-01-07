@@ -1,2 +1,9 @@
 ---
 AllChannels: true
+Config:
+  Project:
+    Name: My Awesome Project
+    Version: 1.2.3
+    Details:
+      Author: John Doe
+      Created: 2023-11-20

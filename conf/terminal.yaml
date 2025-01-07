@@ -15,6 +15,7 @@ ProtocolConfig:
   - chat
   - clu-jobs
   - botdev
+  - js
   - lua
   - ruby
   - python
