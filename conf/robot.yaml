@@ -37,7 +37,7 @@ Alias: '{{ $botalias }}'
 
 # Brain configuration; this can all be replaced with static configuration
 # and encrypted secrets for most robots.
-{{ $brain := env "GOPHER_BRAIN" | default "file" }}
+{{ $brain := env "GOPHER_BRAIN" | default "cloudflare" }}
 {{ $statedir := env "GOPHER_STATE_DIRECTORY" | default "state" }}
 {{ $defbraindir := printf "%s/brain" $statedir }}
 Brain: {{ $brain }}
@@ -52,6 +52,12 @@ BrainConfig:
   Region: {{ env "GOPHER_BRAIN_REGION" | default "us-east-1" }}
   AccessKeyID: "replace with encrypted value"
   SecretAccessKey: "replace with encrypted value"
+{{ else if eq $brain "cloudflare" }}
+BrainConfig:
+    AccountID: "cff30e74f111728929b7ce3fb598653e"
+    NamespaceID: "4bc7049ea9664613b1d0fdc6b41e15bb"
+    MaxAgeHours: 7
+    APIToken: {{ decrypt "PV6ETbC08bDuTGGgucSNZNUdVdsXidugDOhaz7TNKveD1gL6RUINoFYFLUQuqxmmbCjby13wjLlvE2oJjkKgOQFXJ0Q=" }}
 {{ end }}
 # End brain config
 
