@@ -37,7 +37,7 @@ Alias: '{{ $botalias }}'
 
 # Brain configuration; this can all be replaced with static configuration
 # and encrypted secrets for most robots.
-{{ $brain := env "GOPHER_BRAIN" | default "cloudflare" }}
+{{ $brain := env "GOPHER_BRAIN" | default "gcpfirestore" }}
 {{ $statedir := env "GOPHER_STATE_DIRECTORY" | default "state" }}
 {{ $defbraindir := printf "%s/brain" $statedir }}
 Brain: {{ $brain }}
@@ -54,10 +54,24 @@ BrainConfig:
   SecretAccessKey: "replace with encrypted value"
 {{ else if eq $brain "cloudflare" }}
 BrainConfig:
-    AccountID: "cff30e74f111728929b7ce3fb598653e"
-    NamespaceID: "4bc7049ea9664613b1d0fdc6b41e15bb"
-    MaxAgeHours: 7
-    APIToken: {{ decrypt "PV6ETbC08bDuTGGgucSNZNUdVdsXidugDOhaz7TNKveD1gL6RUINoFYFLUQuqxmmbCjby13wjLlvE2oJjkKgOQFXJ0Q=" }}
+  AccountID: "cff30e74f111728929b7ce3fb598653e"
+  NamespaceID: "4bc7049ea9664613b1d0fdc6b41e15bb"
+  MaxAgeHours: 7
+  APIToken: {{ decrypt "PV6ETbC08bDuTGGgucSNZNUdVdsXidugDOhaz7TNKveD1gL6RUINoFYFLUQuqxmmbCjby13wjLlvE2oJjkKgOQFXJ0Q=" }}
+{{ else if eq $brain "gcpfirestore" }}
+BrainConfig:
+  Type: "service_account"
+  ProjectID: "gopherbot-440716"
+  PrivateKeyID: "f7bf622f0a7975de969759c9a3109c9b5b4205"
+  PrivateKey: {{ decrypt "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" }}
+  ClientEmail: "clu-gopherbot@gopherbot-440716.iam.gser"
+  ClientID: "118067560806745295295"
+  AuthURI: "https://accounts.google.com/o/oauth2/auth"
+  TokenURI: "https://oauth2.googleapis.com/token"
+  AuthProviderx509CertURL: "https://www.googleapis.com/oauth2/v1/certs"
+  Clientx509CertURL: "https://www.googleapis.com/robot/v1/metadata/x509/clu-gopherbot%40gopherbot-440716.iam.gserviceaccount.com"
+  UniverseDomain: "googleapis.com"
+  Collection: "CluBrain"
 {{ end }}
 # End brain config
 
