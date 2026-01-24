@@ -118,11 +118,11 @@ ScheduledJobs:
 #   - "Goodbye, World !!!"
 
 ExternalPlugins:
-  # "ai":
-  #   Path: plugins/ai.rb
-  #   Description: A trivial plugin wrapping the OpenAI completions API
-  #   ParameterSets:
-  #   - "openai"
+  "ai":
+    Path: plugins/ai.rb
+    Description: A trivial plugin wrapping the OpenAI completions API
+    ParameterSets:
+    - "openai"
   "weather":
     Description: A plugin that uses OpenWeatherMap to report the weather
     Path: plugins/weather.rb
@@ -135,7 +135,7 @@ ExternalPlugins:
       Value: {{ env "GOPHER_OWM_COUNTRY" | default "us" }} # or other ISO 3166 country code
   "chuck":
     Description: A plugin that pipes up whenever The Man's name is mentioned
-    Path: plugins/chuck.rb
+    Path: plugins/chuck.lua
   "rubytest":
     Description: A trivial ruby plugin for testing and verifying the ruby library
     Path: plugins/rubytest.rb
