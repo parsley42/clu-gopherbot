@@ -118,11 +118,11 @@ ScheduledJobs:
 #   - "Goodbye, World !!!"
 
 ExternalPlugins:
-  "ai":
-    Path: plugins/ai.rb
-    Description: A trivial plugin wrapping the OpenAI completions API
-    ParameterSets:
-    - "openai"
+  # "ai":
+  #   Path: plugins/ai.rb
+  #   Description: A trivial plugin wrapping the OpenAI completions API
+  #   ParameterSets:
+  #   - "openai"
   "weather":
     Description: A plugin that uses OpenWeatherMap to report the weather
     Path: plugins/weather.rb
