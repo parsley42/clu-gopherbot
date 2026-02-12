@@ -11,8 +11,9 @@ SecureParameters: true
 ## Configure the robot connection protocol
 {{ $proto := env "GOPHER_PROTOCOL" | default "terminal" }}
 Protocol: {{ $proto }}
-PrimaryProtocol: "ssh"
-SecondaryProtocols: [ "slack" ]
+# PrimaryProtocol: "ssh"
+# SecondaryProtocols: [ "slack" ]
+SecondaryProtocols: [ "ssh" ]
 
 ## Protocol-specific configuration
 {{ if eq $proto "slack" }}
