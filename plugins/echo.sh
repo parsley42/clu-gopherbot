@@ -11,13 +11,15 @@ shift
 # END Boilerplate
 
 configure(){
-	cat <<"EOF"
+	cat <<"EOF2"
 ---
 Help:
 - Keywords: [ "repeat" ]
   Helptext: [ "(bot), repeat (me) - prompt for and trivially repeat a phrase" ]
 - Keywords: [ "echo" ]
   Helptext: [ "(bot), echo <something> - tell the bot to say <something>" ]
+- Keywords: [ "protocol-say" ]
+  Helptext: [ "(bot), protocol-say <proto> <channel> [user] - send a simple cross-protocol test message" ]
 CommandMatchers:
 - Command: "repeat"
   Regex: '(?i:repeat( me)?)'
@@ -29,7 +31,9 @@ CommandMatchers:
 ## 'hello\nworld'
 - Command: "echo"
   Regex: '(?i:necho (.*))'
-EOF
+- Command: "protocol-say"
+  Regex: '(?i:protocol[- ]say\s+([^\s]+)\s+([^\s]+)(?:\s+([^\s]+))?)'
+EOF2
 }
 
 case "$command" in
@@ -47,6 +51,30 @@ case "$command" in
 		AddTask "status" "I gave status, alright!"
 		# FinalTask "email-log"
 		# /bin/false
+		;;
+	"protocol-say")
+		PROTO="$1"
+		CHANNEL="$2"
+		TARGET_USER="$3"
+		if [ -z "$PROTO" ] || [ -z "$CHANNEL" ]
+		then
+			Reply "Usage: protocol-say <proto> <channel> [user]"
+			exit 0
+		fi
+		MSG="protocol-say test from $GOPHER_USER"
+		SendProtocolUserChannelMessage "$PROTO" "$TARGET_USER" "$CHANNEL" "$MSG"
+		RETVAL=$?
+		if [ $RETVAL -ne $GBRET_Ok ]
+		then
+			Reply "protocol-say failed ($RETVAL)"
+		else
+			if [ -n "$TARGET_USER" ]
+			then
+				Reply "protocol-say sent to $PROTO/$CHANNEL (user: $TARGET_USER)"
+			else
+				Reply "protocol-say sent to $PROTO/$CHANNEL"
+			fi
+		fi
 		;;
 	"init")
 		echo "Clu starting up!"
