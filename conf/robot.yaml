@@ -9,11 +9,9 @@ IgnoreUnlistedUsers: true
 SecureParameters: true
 
 ## Configure the robot connection protocol
-{{ $proto := env "GOPHER_PROTOCOL" | default "terminal" }}
+{{ $proto := env "GOPHER_PROTOCOL" | default "ssh" }}
 Protocol: {{ $proto }}
-# PrimaryProtocol: "ssh"
-# SecondaryProtocols: [ "slack" ]
-SecondaryProtocols: [ "ssh" ]
+SecondaryProtocols: [ "slack", "ssh" ]
 
 ## Protocol-specific configuration
 {{ if eq $proto "slack" }}
@@ -22,6 +20,10 @@ SecondaryProtocols: [ "ssh" ]
 
 {{ if eq $proto "terminal" }}
 {{ .Include "terminal.yaml" }}
+{{ end }}
+
+{{ if eq $proto "ssh" }}
+{{ .Include "ssh.yaml" }}
 {{ end }}
 
 {{ $botname := env "GOPHER_BOTNAME" | default "Clu" }}
