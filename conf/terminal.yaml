@@ -1,5 +1,3 @@
-AdminUsers: [ "alice", "parsley" ]
-
 DefaultChannels: [ "general", "random", "chat", "botdev", "clu-jobs" ]
 ProtocolConfig:
   EOF: '!quit'

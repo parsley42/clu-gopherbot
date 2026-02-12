@@ -4,6 +4,7 @@
 # List of users that can issue admin commands like reload, quit. Should be
 # a list of user handles / nicks.
 AdminContact: "David Parsley, <parsley@linuxjedi.org>"
+AdminUsers: [ "adrienne", "parsley" ]
 IgnoreUsers: [ "floyd", "bender" ]
 IgnoreUnlistedUsers: true
 SecureParameters: true

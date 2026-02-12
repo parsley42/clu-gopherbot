@@ -11,8 +11,6 @@ UserRoster:
 - UserName: parsley
   UserID: U0JLW8EMS
 
-AdminUsers: [ "parsley", "adrienne" ]
-
 ProtocolConfig:
   MaxMessageSplit: {{ env "GOPHER_SLACK_MAX_MSGS" | default "2" }}
 {{ if env "SLACK_LEGACY" }}
