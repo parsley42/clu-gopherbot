@@ -18,8 +18,10 @@ Help:
   Helptext: [ "(bot), repeat (me) - prompt for and trivially repeat a phrase" ]
 - Keywords: [ "echo" ]
   Helptext: [ "(bot), echo <something> - tell the bot to say <something>" ]
-- Keywords: [ "protocol-say" ]
-  Helptext: [ "(bot), protocol-say <proto> <channel> [user] - send a simple cross-protocol test message" ]
+- Keywords: [ "protocol-say", "protocol", "say" ]
+  Helptext: [ "(bot), protocol-say <proto> <channel> <message> - send a cross-protocol channel message" ]
+- Keywords: [ "protocol-tell", "protocol", "tell" ]
+  Helptext: [ "(bot), protocol-tell <proto> <channel> <user> <message> - send a cross-protocol directed message" ]
 CommandMatchers:
 - Command: "repeat"
   Regex: '(?i:repeat( me)?)'
@@ -32,7 +34,9 @@ CommandMatchers:
 - Command: "echo"
   Regex: '(?i:necho (.*))'
 - Command: "protocol-say"
-  Regex: '(?i:protocol[- ]say\s+([^\s]+)\s+([^\s]+)(?:\s+([^\s]+))?)'
+  Regex: '(?i:protocol[- ]say\s+([^\s]+)\s+([^\s]+)\s+([^\n]+))'
+- Command: "protocol-tell"
+  Regex: '(?i:protocol[- ]tell\s+([^\s]+)\s+([^\s]+)\s+([^\s]+)\s+([^\n]+))'
 EOF2
 }
 
@@ -55,25 +59,40 @@ case "$command" in
 	"protocol-say")
 		PROTO="$1"
 		CHANNEL="$2"
-		TARGET_USER="$3"
-		if [ -z "$PROTO" ] || [ -z "$CHANNEL" ]
+		shift 2
+		MSG="$*"
+		if [ -z "$PROTO" ] || [ -z "$CHANNEL" ] || [ -z "$MSG" ]
 		then
-			Reply "Usage: protocol-say <proto> <channel> [user]"
+			Reply "Usage: protocol-say <proto> <channel> <message>"
 			exit 0
 		fi
-		MSG="protocol-say test from $GOPHER_USER"
-		SendProtocolUserChannelMessage "$PROTO" "$TARGET_USER" "$CHANNEL" "$MSG"
+		SendProtocolUserChannelMessage "$PROTO" "" "$CHANNEL" "$MSG"
 		RETVAL=$?
 		if [ $RETVAL -ne $GBRET_Ok ]
 		then
 			Reply "protocol-say failed ($RETVAL)"
 		else
-			if [ -n "$TARGET_USER" ]
-			then
-				Reply "protocol-say sent to $PROTO/$CHANNEL (user: $TARGET_USER)"
-			else
-				Reply "protocol-say sent to $PROTO/$CHANNEL"
-			fi
+			Reply "protocol-say sent to $PROTO/$CHANNEL"
+		fi
+		;;
+	"protocol-tell")
+		PROTO="$1"
+		CHANNEL="$2"
+		TARGET_USER="$3"
+		shift 3
+		MSG="$*"
+		if [ -z "$PROTO" ] || [ -z "$CHANNEL" ] || [ -z "$TARGET_USER" ] || [ -z "$MSG" ]
+		then
+			Reply "Usage: protocol-tell <proto> <channel> <user> <message>"
+			exit 0
+		fi
+		SendProtocolUserChannelMessage "$PROTO" "$TARGET_USER" "$CHANNEL" "$MSG"
+		RETVAL=$?
+		if [ $RETVAL -ne $GBRET_Ok ]
+		then
+			Reply "protocol-tell failed ($RETVAL)"
+		else
+			Reply "protocol-tell sent to $PROTO/$CHANNEL (user: $TARGET_USER)"
 		fi
 		;;
 	"init")
