@@ -27,9 +27,6 @@ ProtocolConfig:
     LastName: "Parsley"
     Phone: "(555)765-0007"
 
-AppendUserRoster:
-- UserName: "parsley"
-  UserID: "u0007"
-- UserName: "clu"
-  UserID: "u0000"
-  BotUser: true
+AppendUserMap:
+  parsley: "u0007"
+  clu: "u0000"

@@ -11,21 +11,9 @@ SecureParameters: true
 
 ## Configure the robot connection protocol
 {{ $proto := env "GOPHER_PROTOCOL" | default "ssh" }}
-Protocol: {{ $proto }}
-SecondaryProtocols: [ "slack", "ssh" ]
-
-## Protocol-specific configuration
-{{ if eq $proto "slack" }}
-{{ .Include "slack.yaml" }}
-{{ end }}
-
-{{ if eq $proto "terminal" }}
-{{ .Include "terminal.yaml" }}
-{{ end }}
-
-{{ if eq $proto "ssh" }}
-{{ .Include "ssh.yaml" }}
-{{ end }}
+PrimaryProtocol: {{ $proto }}
+DefaultProtocol: {{ env "GOPHER_DEFAULT_PROTOCOL" | default "ssh" }}
+SecondaryProtocols: [ "slack" ]
 
 {{ $botname := env "GOPHER_BOTNAME" | default "Clu" }}
 {{ $botemail := env "GOPHER_BOTMAIL" | default "clu@linuxjedi.org" }}
@@ -41,9 +29,18 @@ BotInfo:
 
 Alias: '{{ $botalias }}'
 
+UserRoster:
+# Floyd is the production robot that builds gopherbot
+- UserName: floyd
+  BotUser: true
+- UserName: clu
+  BotUser: true
+- UserName: adrienne
+- UserName: parsley
+
 # Brain configuration; this can all be replaced with static configuration
 # and encrypted secrets for most robots.
-{{ $brain := env "GOPHER_BRAIN" | default "cloudflare" }}
+{{ $brain := env "GOPHER_BRAIN" | default "file" }}
 {{ $statedir := env "GOPHER_STATE_DIRECTORY" | default "state" }}
 {{ $defbraindir := printf "%s/brain" $statedir }}
 Brain: {{ $brain }}
@@ -66,6 +63,15 @@ BrainConfig:
   APIToken: {{ decrypt "PV6ETbC08bDuTGGgucSNZNUdVdsXidugDOhaz7TNKveD1gL6RUINoFYFLUQuqxmmbCjby13wjLlvE2oJjkKgOQFXJ0Q=" }}
 {{ end }}
 # End brain config
+
+# Development default logging: stdout except for terminal protocol (stdout
+# interferes with terminal connector UI).
+{{ $logdest := env "GOPHER_LOG_DEST" | default "stdout" }}
+{{ if and (eq $proto "terminal") (eq $logdest "stdout") }}
+{{ $logdest = "robot.log" }}
+{{ end }}
+LogDest: {{ $logdest }}
+LogLevel: {{ env "GOPHER_LOG_LEVEL" | default "debug" }}
 
 # Defaults for history and workspace directories, relative to the
 # process working directory.

@@ -1,15 +1,9 @@
-UserRoster:
-# Floyd is the production robot that builds gopherbot
-- UserName: floyd
-  UserID: U138KTVCL
-  BotUser: true
-- UserName: clu
-  UserID: U03MFS3PHMF
-  BotUser: true
-- UserName: adrienne
-  UserID: U0JM3H95G
-- UserName: parsley
-  UserID: U0JLW8EMS
+UserMap:
+  # Floyd is the production robot that builds gopherbot
+  floyd: U138KTVCL
+  clu: U03MFS3PHMF
+  adrienne: U0JM3H95G
+  parsley: U0JLW8EMS
 
 ProtocolConfig:
   MaxMessageSplit: {{ env "GOPHER_SLACK_MAX_MSGS" | default "2" }}
