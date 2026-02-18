@@ -29,7 +29,7 @@ BotInfo:
 
 Alias: '{{ $botalias }}'
 
-UserRoster:
+AppendUserRoster:
 # Floyd is the production robot that builds gopherbot
 - UserName: floyd
   BotUser: true
