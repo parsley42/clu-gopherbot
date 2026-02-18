@@ -13,30 +13,47 @@ shift
 configure(){
 	cat <<"EOF2"
 ---
-Help:
-- Keywords: [ "repeat" ]
-  Helptext: [ "(bot), repeat (me) - prompt for and trivially repeat a phrase" ]
-- Keywords: [ "echo" ]
-  Helptext: [ "(bot), echo <something> - tell the bot to say <something>" ]
-- Keywords: [ "protocol-say", "protocol", "say" ]
-  Helptext: [ "(bot), protocol-say <proto> <channel> <message> - send a cross-protocol channel message" ]
-- Keywords: [ "protocol-tell", "protocol", "tell" ]
-  Helptext: [ "(bot), protocol-tell <proto> <channel> <user> <message> - send a cross-protocol directed message" ]
-CommandMatchers:
+Commands:
 - Command: "repeat"
   Regex: '(?i:repeat( me)?)'
-## This will match the collapsed version of the message;
-## 'hello\nworld' will echo 'hello world'
+  Keywords: [ "repeat" ]
+  Usage: "(alias) repeat me"
+  Summary: "prompt for a phrase and repeat it back"
+  Examples:
+  - "(alias) repeat me"
+  Helptext: [ "(alias) repeat (me) - prompt for and trivially repeat a phrase" ]
 - Command: "echo"
   Regex: '(?i:echo ([^\n]*))'
-## This will match the full message; 'hello\nworld' will echo
-## 'hello\nworld'
+  Keywords: [ "echo" ]
+  Usage: "(alias) echo <something>"
+  Summary: "tell the bot to say <something>"
+  Examples:
+  - "(alias) echo hello world"
+  Helptext: [ "(alias) echo <something> - tell the bot to say <something>" ]
 - Command: "echo"
   Regex: '(?i:necho (.*))'
+  Keywords: [ "echo", "multiline" ]
+  Usage: "(alias) necho <message>"
+  Summary: "echo full multi-line input without collapse"
+  Examples:
+  - "(alias) necho hello"
+  Helptext: [ "(alias) necho <message> - echo full multi-line input without collapse" ]
 - Command: "protocol-say"
   Regex: '(?i:protocol[- ]say\s+([^\s]+)\s+([^\s]+)\s+([^\n]+))'
+  Keywords: [ "protocol-say", "protocol", "say" ]
+  Usage: "(alias) protocol-say <proto> <channel> <message>"
+  Summary: "send a cross-protocol channel message"
+  Examples:
+  - "(alias) protocol-say slack clu-jobs hello"
+  Helptext: [ "(alias) protocol-say <proto> <channel> <message> - send a cross-protocol channel message" ]
 - Command: "protocol-tell"
   Regex: '(?i:protocol[- ]tell\s+([^\s]+)\s+([^\s]+)\s+([^\s]+)\s+([^\n]+))'
+  Keywords: [ "protocol-tell", "protocol", "tell" ]
+  Usage: "(alias) protocol-tell <proto> <channel> <user> <message>"
+  Summary: "send a cross-protocol directed message"
+  Examples:
+  - "(alias) protocol-tell slack general parsley hi"
+  Helptext: [ "(alias) protocol-tell <proto> <channel> <user> <message> - send a cross-protocol directed message" ]
 EOF2
 }
 

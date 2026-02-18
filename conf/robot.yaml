@@ -4,16 +4,16 @@
 # List of users that can issue admin commands like reload, quit. Should be
 # a list of user handles / nicks.
 AdminContact: "David Parsley, <parsley@linuxjedi.org>"
-AdminUsers: [ "adrienne", "parsley" ]
+AdminUsers: [ "adrienne", "parsley", "alice" ] # "alice" is for use by the AI
 IgnoreUsers: [ "floyd", "bender" ]
 IgnoreUnlistedUsers: true
 SecureParameters: true
 
-## Configure the robot connection protocol
-{{ $proto := env "GOPHER_PROTOCOL" | default "ssh" }}
-PrimaryProtocol: {{ $proto }}
-DefaultProtocol: {{ env "GOPHER_DEFAULT_PROTOCOL" | default "ssh" }}
-SecondaryProtocols: [ "slack" ]
+{{ $environment := env "GOPHER_ENVIRONMENT" | default "production" }}
+{{ printf "environments/%s.yaml" $environment | .Include }}
+
+DefaultChannels: [ "general", "random", "chat", "botdev", "clu-jobs" ]
+JoinChannels: [ "botdev" ]
 
 {{ $botname := env "GOPHER_BOTNAME" | default "Clu" }}
 {{ $botemail := env "GOPHER_BOTMAIL" | default "clu@linuxjedi.org" }}
@@ -38,64 +38,16 @@ AppendUserRoster:
 - UserName: adrienne
 - UserName: parsley
 
-# Brain configuration; this can all be replaced with static configuration
-# and encrypted secrets for most robots.
-{{ $brain := env "GOPHER_BRAIN" | default "file" }}
-{{ $statedir := env "GOPHER_STATE_DIRECTORY" | default "state" }}
-{{ $defbraindir := printf "%s/brain" $statedir }}
-Brain: {{ $brain }}
-#EncryptBrain: true # default
-{{ if eq $brain "file" }}
-BrainConfig:
-  BrainDirectory: {{ env "GOPHER_BRAIN_DIRECTORY" | default $defbraindir }}
-  Encode: true
-{{ else if eq $brain "dynamo" }}
-BrainConfig:
-  TableName: "your table name here"
-  Region: {{ env "GOPHER_BRAIN_REGION" | default "us-east-1" }}
-  AccessKeyID: "replace with encrypted value"
-  SecretAccessKey: "replace with encrypted value"
-{{ else if eq $brain "cloudflare" }}
-BrainConfig:
-  AccountID: "cff30e74f111728929b7ce3fb598653e"
-  NamespaceID: "4bc7049ea9664613b1d0fdc6b41e15bb"
-  MaxAgeHours: 7
-  APIToken: {{ decrypt "PV6ETbC08bDuTGGgucSNZNUdVdsXidugDOhaz7TNKveD1gL6RUINoFYFLUQuqxmmbCjby13wjLlvE2oJjkKgOQFXJ0Q=" }}
-{{ end }}
-# End brain config
-
-# Development default logging: stdout except for terminal protocol (stdout
-# interferes with terminal connector UI).
-{{ $logdest := env "GOPHER_LOG_DEST" | default "stdout" }}
-{{ if and (eq $proto "terminal") (eq $logdest "stdout") }}
-{{ $logdest = "robot.log" }}
-{{ end }}
-LogDest: {{ $logdest }}
 LogLevel: {{ env "GOPHER_LOG_LEVEL" | default "debug" }}
 
 # Defaults for history and workspace directories, relative to the
 # process working directory.
-{{ $histdir := env "GOPHER_HISTORY_DIRECTORY" | default "history" }}
 {{ $workdir := env "GOPHER_WORKSPACE_DIRECTORY" | default "workspace" }}
 {{ if $workdir -}} WorkSpace: {{ $workdir }} {{- end }}
 
 ## Configure a history provider
 {{ $history := env "GOPHER_HISTORY_PROVIDER" | default "file" }}
 HistoryProvider: {{ $history }}
-
-{{ if eq $history "file" }}
-HistoryConfig:
-  Directory: {{ $histdir }}
-  URLPrefix: 'http://localhost:9000'
-  LocalPort: ':9000'
-{{ end }}
-{{ if eq $history "mem" }}
-HistoryConfig:
-  BufferSize: 131072
-  MaxLineLength: 8092
-  Truncated: " <...>"
-{{ end }}
-## End history config
 
 ## Later: modify this for other protocols
 {{ $defaultjobchannel := "clu-jobs" }}
@@ -112,13 +64,11 @@ DefaultJobChannel: {{ env "GOPHER_JOBCHANNEL" | default $defaultjobchannel }}
 ScheduledJobs:
 # - Name: install-libs
 #   Schedule: "@init"
-{{ if ne $proto "terminal" }}
 # These jobs don't run in the terminal connector
 # - Name: backup
 #   Schedule: "@every 1m"
 - Name: logrotate
   Schedule: "0 1 0 * * *"
-{{ end }}
 # These jobs run even in the terminal connector
 - Name: "pause-notifies"
   Schedule: "0 0 8 * * *"

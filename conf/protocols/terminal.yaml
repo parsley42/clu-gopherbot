@@ -1,4 +1,3 @@
-DefaultChannels: [ "general", "random", "chat", "botdev", "clu-jobs" ]
 ProtocolConfig:
   EOF: '!quit'
   Abort: '!abort'
@@ -26,7 +25,3 @@ ProtocolConfig:
     FirstName: "David"
     LastName: "Parsley"
     Phone: "(555)765-0007"
-
-AppendUserMap:
-  parsley: "u0007"
-  clu: "u0000"

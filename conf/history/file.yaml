@@ -1,0 +1,5 @@
+{{ $histdir := env "GOPHER_HISTORY_DIRECTORY" | default "history" }}
+HistoryConfig:
+  Directory: {{ $histdir }}
+  URLPrefix: 'http://localhost:9000'
+  LocalPort: ':9000'

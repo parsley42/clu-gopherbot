@@ -7,12 +7,15 @@ bot = Robot.new()
 
 defaultConfig = <<'DEFCONFIG'
 AllowDirect: false
-Help:
-- Keywords: [ "say", "anything" ]
-  Helptext: [ "(bot), say anything - blurt out some crap to test ruby lib" ]
-CommandMatchers:
+Commands:
 - Regex: '(?i:say anything)'
   Command: "sayit"
+  Keywords: [ "say", "anything" ]
+  Usage: "(alias) say anything"
+  Summary: "blurt out some text to verify the ruby library"
+  Examples:
+  - "(alias) say anything"
+  Helptext: [ "(alias) say anything - blurt out some crap to test ruby lib" ]
 DEFCONFIG
 
 command = ARGV.shift()

@@ -1,0 +1,6 @@
+## Development defaults for Clu.
+PrimaryProtocol: ssh
+DefaultProtocol: ssh
+SecondaryProtocols: [ "slack" ]
+Brain: file
+LogDest: stdout

@@ -1,6 +1,3 @@
-AppendUserMap:
-  parsley: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDLOqrf0eWjEO/kYfjo9I+rnEiQhfU2i0tjmZ0Ju91K6 david@penguin"
-
 ProtocolConfig:
   ListenHost: localhost
   DefaultChannel: general
@@ -13,3 +10,17 @@ ProtocolConfig:
   - botdev
   - clu-jobs
   - deadzone
+  UserKeys:
+  - UserName: parsley
+    PublicKeys:
+    - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDLOqrf0eWjEO/kYfjo9I+rnEiQhfU2i0tjmZ0Ju91K6 david@home"
+    - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDWdY4CA1GVkyqeOxOvmop1EA5R37dpnENlIQjyIaY2W david@work"
+  - UserName: alice
+    PublicKeys:
+    - "ssh-invalid AIUSEONLY alice@cyberspace"
+  - UserName: bob
+    PublicKeys:
+    - "ssh-invalid AIUSEONLY bob@cyberspace"
+  - UserName: carol
+    PublicKeys:
+    - "ssh-invalid AIUSEONLY carol@cyberspace"

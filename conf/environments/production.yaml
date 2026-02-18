@@ -1,0 +1,6 @@
+## Production defaults for Clu.
+PrimaryProtocol: ssh
+DefaultProtocol: slack
+SecondaryProtocols: [ "slack" ]
+Brain: cloudflare
+LogDest: stdout

@@ -9,22 +9,50 @@ configure(){
   cat <<"EOF"
 Channels:
 - general
-Help:
-- Keywords: [ "format", "world" ]
-  Helptext: [ "(bot), format world - exercise formatting options" ]
-CommandMatchers:
-- Regex: '(?i:format world)'
-  Command: "format"
-- Regex: '(?i:format fixed)'
-  Command: "fixed"
-- Regex: '(?i:format variable)'
-  Command: "variable"
-- Regex: '(?i:format raw)'
-  Command: "raw"
-- Regex: '(?i:split fixed)'
-  Command: "longfixed"
-- Regex: '(?i:split raw)'
-  Command: "longraw"
+Commands:
+- Command: "format"
+  Regex: '(?i:format world)'
+  Keywords: [ "format", "world" ]
+  Usage: "(alias) format world"
+  Summary: "exercise formatting options"
+  Examples:
+  - "(alias) format world"
+  Helptext: [ "(alias) format world - exercise formatting options" ]
+- Command: "fixed"
+  Regex: '(?i:format fixed)'
+  Keywords: [ "format", "fixed" ]
+  Usage: "(alias) format fixed"
+  Summary: "send a fixed-format demo message"
+  Examples:
+  - "(alias) format fixed"
+- Command: "variable"
+  Regex: '(?i:format variable)'
+  Keywords: [ "format", "variable" ]
+  Usage: "(alias) format variable"
+  Summary: "send a variable-format demo message"
+  Examples:
+  - "(alias) format variable"
+- Command: "raw"
+  Regex: '(?i:format raw)'
+  Keywords: [ "format", "raw" ]
+  Usage: "(alias) format raw"
+  Summary: "send a raw-format demo message"
+  Examples:
+  - "(alias) format raw"
+- Command: "longfixed"
+  Regex: '(?i:split fixed)'
+  Keywords: [ "format", "split", "fixed" ]
+  Usage: "(alias) split fixed"
+  Summary: "send a long fixed-format message to test splitting"
+  Examples:
+  - "(alias) split fixed"
+- Command: "longraw"
+  Regex: '(?i:split raw)'
+  Keywords: [ "format", "split", "raw" ]
+  Usage: "(alias) split raw"
+  Summary: "send a long raw-format message to test splitting"
+  Examples:
+  - "(alias) split raw"
 EOF
 }
 

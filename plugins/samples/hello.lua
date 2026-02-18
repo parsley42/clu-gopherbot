@@ -6,16 +6,23 @@
 -- is active in, is normally configured by the individual robot.
 local defaultConfig = [[
 ---
-Help:
-- Keywords: [ "lua" ]
-  Helptext: [ "(bot), hello lua - trigger lua hello world" ]
-- Keywords: [ "lua" ]
-  Helptext: [ "(bot), testmsg lua - trigger lua messaging tests" ]
-CommandMatchers:
-- Regex: (?i:hello lua)
+Commands:
+- Regex: '(?i:hello lua)'
   Command: lua
-- Regex: (?i:testmsg lua)
+  Keywords: [ "lua" ]
+  Usage: "(alias) hello lua"
+  Summary: "trigger lua hello world"
+  Examples:
+  - "(alias) hello lua"
+  Helptext: [ "(alias) hello lua - trigger lua hello world" ]
+- Regex: '(?i:testmsg lua)'
   Command: testmsg
+  Keywords: [ "lua", "testmsg" ]
+  Usage: "(alias) testmsg lua"
+  Summary: "run lua messaging tests"
+  Examples:
+  - "(alias) testmsg lua"
+  Helptext: [ "(alias) testmsg lua - trigger lua messaging tests" ]
 ]]
 
 -- Load our gopherbot library module (gopherbot_v1.lua).

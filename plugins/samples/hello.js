@@ -3,12 +3,15 @@
 
 // Define the default configuration as a YAML string
 const defaultConfig = `---
-Help:
-  - Keywords: [ "js" ]
-    Helptext: [ "(bot), hello js - trigger JavaScript hello world" ]
-CommandMatchers:
-  - Regex: (?i:hello js)
+Commands:
+  - Regex: '(?i:hello js)'
     Command: js
+    Keywords: [ "js" ]
+    Usage: "(alias) hello js"
+    Summary: "trigger JavaScript hello world"
+    Examples:
+      - "(alias) hello js"
+    Helptext: [ "(alias) hello js - trigger JavaScript hello world" ]
 `;
 
 // Require the Gopherbot JavaScript library
