@@ -1,9 +1,14 @@
 package main
 
 import (
+	"bufio"
+	"bytes"
+	"crypto/sha1"
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
+	"io"
+	"net/http"
 	"strings"
 	"time"
 
@@ -16,6 +21,9 @@ const (
 	defaultProfile             = "default"
 	maxPendingMessages         = 24
 	maxProcessedMessages       = 48
+	openAIChatCompletionsURL   = "https://api.openai.com/v1/chat/completions"
+	defaultChunkSoftLimit      = 420
+	defaultChunkHardLimit      = 620
 )
 
 var defaultConfig = []byte(`
@@ -164,23 +172,37 @@ func handleConversationEntry(r robot.Robot, command string, args ...string) robo
 	state.UpdatedAt = nowString()
 	saveConversationState(r, ctx.MemoryKey, state)
 
+	tbot := r
+	if !ctx.Direct {
+		tbot = r.Threaded()
+	}
 	if !ctx.Direct && ctx.ThreadID != "" && len(state.Exchanges) == 0 {
 		r.Subscribe()
 	}
 
-	// Placeholder for slice 3+ implementation.
 	hold := randomWaitMessage(r)
-	if hold != "" {
-		r.ReplyThread("(%s)", hold)
+	if hold != "" && len(state.Exchanges) == 0 {
+		tbot.Reply("( %s )", hold)
+	} else if len(state.Exchanges) > 0 {
+		tbot.Say("(%s)", r.RandomString([]string{"pondering", "working", "thinking", "cogitating", "processing", "analyzing"}))
 	} else {
-		r.ReplyThread("(thinking...)")
+		tbot.Reply("(thinking...)")
 	}
-	r.SayThread("AI vNext scaffold is active; streaming implementation is in progress.")
 
+	reply := ""
 	if strings.TrimSpace(ctx.Prompt) != "" {
+		var err error
+		reply, err = queryOpenAI(tbot, r, ctx, state, loadConfig(r))
+		if err != nil {
+			tbot.Say("Sorry, there was an error contacting the AI: %s", err)
+			state.InProgress = false
+			state.UpdatedAt = nowString()
+			saveConversationState(r, ctx.MemoryKey, state)
+			return robot.Normal
+		}
 		state.Exchanges = append(state.Exchanges, conversationExchange{
 			Human: fmt.Sprintf("%s says: %s", ctx.User, ctx.Prompt),
-			AI:    "(placeholder response)",
+			AI:    reply,
 		})
 	}
 	state.InProgress = false
@@ -287,6 +309,15 @@ func makeConversationContext(r robot.Robot, args ...string) conversationContext 
 	messageID := strings.TrimSpace(r.GetParameter("GOPHER_MESSAGE_ID"))
 	user := strings.TrimSpace(r.GetParameter("GOPHER_USER"))
 	protocol := strings.TrimSpace(r.GetParameter("GOPHER_PROTOCOL"))
+	if protocol == "" {
+		protocol = "unknown"
+	}
+	if user == "" {
+		user = "unknown"
+	}
+	if channel == "" {
+		channel = "default"
+	}
 	prompt := ""
 	if len(args) > 0 {
 		prompt = strings.TrimSpace(args[0])
@@ -308,13 +339,13 @@ func makeConversationContext(r robot.Robot, args ...string) conversationContext 
 	}
 
 	if direct {
-		ctx.MemoryKey = shortTermMemoryPrefix
-		ctx.DebugKey = shortTermMemoryDebugPrefix + ":dm:" + strings.ToLower(user)
-		ctx.ExclusiveTag = fmt.Sprintf("%s:%s:dm:%s", shortTermMemoryPrefix, protocol, strings.ToLower(user))
+		ctx.MemoryKey = fmt.Sprintf("%s:%s:dm:%s", shortTermMemoryPrefix, strings.ToLower(protocol), strings.ToLower(user))
+		ctx.DebugKey = fmt.Sprintf("%s:%s:dm:%s", shortTermMemoryDebugPrefix, strings.ToLower(protocol), strings.ToLower(user))
+		ctx.ExclusiveTag = fmt.Sprintf("%s:%s:dm:%s", shortTermMemoryPrefix, strings.ToLower(protocol), strings.ToLower(user))
 	} else {
-		ctx.MemoryKey = shortTermMemoryPrefix + ":" + threadID
-		ctx.DebugKey = shortTermMemoryDebugPrefix + ":" + threadID
-		ctx.ExclusiveTag = fmt.Sprintf("%s:%s:%s:%s", shortTermMemoryPrefix, protocol, channel, threadID)
+		ctx.MemoryKey = fmt.Sprintf("%s:%s:%s:%s", shortTermMemoryPrefix, strings.ToLower(protocol), strings.ToLower(channel), threadID)
+		ctx.DebugKey = fmt.Sprintf("%s:%s:%s:%s", shortTermMemoryDebugPrefix, strings.ToLower(protocol), strings.ToLower(channel), threadID)
+		ctx.ExclusiveTag = fmt.Sprintf("%s:%s:%s:%s", shortTermMemoryPrefix, strings.ToLower(protocol), strings.ToLower(channel), threadID)
 	}
 
 	if ctx.ExclusiveTag == "" {
@@ -416,4 +447,270 @@ func appendProcessed(processed []string, messageID string) []string {
 
 func nowString() string {
 	return time.Now().UTC().Format(time.RFC3339)
+}
+
+func queryOpenAI(outBot robot.Robot, r robot.Robot, ctx conversationContext, state conversationState, cfg aiConfig) (string, error) {
+	token := strings.TrimSpace(r.GetParameter("OPENAI_KEY"))
+	if token == "" {
+		return "", fmt.Errorf("no OPENAI_KEY set")
+	}
+
+	profile := resolveProfile(state.Profile, cfg)
+	messages := buildMessages(profile.System, state.Exchanges, ctx)
+	payload := map[string]interface{}{
+		"messages": messages,
+		"stream":   true,
+	}
+	for k, v := range profile.Params {
+		payload[k] = v
+	}
+	if _, ok := payload["model"]; !ok {
+		payload["model"] = "gpt-4"
+	}
+	if userID := strings.TrimSpace(r.GetParameter("GOPHER_USER_ID")); userID != "" {
+		payload["user"] = sha1String(userID)
+	}
+
+	reqBody, err := json.Marshal(payload)
+	if err != nil {
+		return "", err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, openAIChatCompletionsURL, bytes.NewReader(reqBody))
+	if err != nil {
+		return "", err
+	}
+	req.Header.Set("Authorization", "Bearer "+token)
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Accept", "text/event-stream")
+	if org := strings.TrimSpace(r.GetParameter("OPENAI_ORGANIZATION_ID")); org != "" {
+		req.Header.Set("OpenAI-Organization", org)
+	}
+
+	client := &http.Client{Timeout: 3 * time.Minute}
+	resp, err := client.Do(req)
+	if err != nil {
+		return "", err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode >= 400 {
+		body, _ := io.ReadAll(resp.Body)
+		return "", fmt.Errorf("%s (%s)", resp.Status, strings.TrimSpace(string(body)))
+	}
+
+	return consumeSSEAndEmit(outBot, resp.Body), nil
+}
+
+func resolveProfile(profileName string, cfg aiConfig) aiProfile {
+	if cfg.Profiles == nil {
+		return aiProfile{
+			Params: map[string]interface{}{
+				"model":       "gpt-4",
+				"temperature": 0.7,
+			},
+			System: "You are Clu, a helpful chatbot assistant.",
+		}
+	}
+	if profileName != "" {
+		if profile, ok := cfg.Profiles[profileName]; ok {
+			return profile
+		}
+	}
+	if profile, ok := cfg.Profiles[defaultProfile]; ok {
+		return profile
+	}
+	for _, profile := range cfg.Profiles {
+		return profile
+	}
+	return aiProfile{
+		Params: map[string]interface{}{
+			"model":       "gpt-4",
+			"temperature": 0.7,
+		},
+		System: "You are Clu, a helpful chatbot assistant.",
+	}
+}
+
+func buildMessages(system string, exchanges []conversationExchange, ctx conversationContext) []map[string]string {
+	if strings.TrimSpace(system) == "" {
+		system = "You are Clu, a helpful chatbot assistant."
+	}
+	messages := []map[string]string{
+		{
+			"role":    "system",
+			"content": system,
+		},
+	}
+	for _, exchange := range exchanges {
+		if strings.TrimSpace(exchange.Human) != "" {
+			messages = append(messages, map[string]string{
+				"role":    "user",
+				"content": exchange.Human,
+			})
+		}
+		if strings.TrimSpace(exchange.AI) != "" {
+			messages = append(messages, map[string]string{
+				"role":    "assistant",
+				"content": exchange.AI,
+			})
+		}
+	}
+	if strings.TrimSpace(ctx.Prompt) != "" {
+		messages = append(messages, map[string]string{
+			"role":    "user",
+			"content": fmt.Sprintf("%s says: %s", ctx.User, ctx.Prompt),
+		})
+	}
+	return messages
+}
+
+func consumeSSEAndEmit(outBot robot.Robot, body io.Reader) string {
+	reader := bufio.NewReader(body)
+	var pending strings.Builder
+	var full strings.Builder
+
+	for {
+		line, err := reader.ReadString('\n')
+		if err != nil && err != io.EOF {
+			break
+		}
+		line = strings.TrimSpace(line)
+		if strings.HasPrefix(line, "data:") {
+			payload := strings.TrimSpace(strings.TrimPrefix(line, "data:"))
+			if payload == "[DONE]" {
+				break
+			}
+			chunk := extractDeltaContent(payload)
+			if chunk != "" {
+				full.WriteString(chunk)
+				pending.WriteString(chunk)
+				emitAvailableChunks(outBot, &pending)
+			}
+		}
+		if err == io.EOF {
+			break
+		}
+	}
+
+	rest := strings.TrimSpace(normalizeChunkText(pending.String()))
+	if rest != "" {
+		outBot.Say(rest)
+	}
+	return strings.TrimSpace(full.String())
+}
+
+func extractDeltaContent(payload string) string {
+	var parsed map[string]interface{}
+	if err := json.Unmarshal([]byte(payload), &parsed); err != nil {
+		return ""
+	}
+	rawChoices, ok := parsed["choices"].([]interface{})
+	if !ok || len(rawChoices) == 0 {
+		return ""
+	}
+	choice, ok := rawChoices[0].(map[string]interface{})
+	if !ok {
+		return ""
+	}
+	rawDelta, ok := choice["delta"].(map[string]interface{})
+	if !ok {
+		return ""
+	}
+	content, _ := rawDelta["content"].(string)
+	return content
+}
+
+func emitAvailableChunks(outBot robot.Robot, pending *strings.Builder) {
+	text := pending.String()
+	for {
+		cut := chunkBoundary(text)
+		if cut < 0 {
+			break
+		}
+		chunk := strings.TrimSpace(normalizeChunkText(text[:cut]))
+		if chunk != "" {
+			outBot.Say(chunk + " (...)")
+		}
+		text = text[cut:]
+	}
+	pending.Reset()
+	pending.WriteString(text)
+}
+
+func chunkBoundary(text string) int {
+	if text == "" {
+		return -1
+	}
+	if idx := strings.Index(text, "\n\n"); idx >= 0 {
+		return idx + 2
+	}
+	if len(text) < defaultChunkSoftLimit {
+		return -1
+	}
+	cutRegion := text
+	if len(cutRegion) > defaultChunkHardLimit {
+		cutRegion = cutRegion[:defaultChunkHardLimit]
+	}
+	for i := len(cutRegion) - 1; i >= 0; i-- {
+		switch cutRegion[i] {
+		case '\n':
+			if i >= defaultChunkSoftLimit/2 {
+				return i + 1
+			}
+		case '.', '!', '?':
+			if i+1 < len(cutRegion) && cutRegion[i+1] == ' ' {
+				if i >= defaultChunkSoftLimit/2 {
+					return i + 1
+				}
+			}
+		}
+	}
+	for i := len(cutRegion) - 1; i >= defaultChunkSoftLimit/2; i-- {
+		if cutRegion[i] == ' ' {
+			return i + 1
+		}
+	}
+	return -1
+}
+
+func normalizeChunkText(text string) string {
+	if text == "" {
+		return text
+	}
+	if strings.EqualFold(strings.TrimSpace(text), "```") {
+		return ""
+	}
+	if strings.TrimSpace(text) == "" {
+		return ""
+	}
+	if strings.Contains(text, "```") {
+		replaced := text
+		for {
+			start := strings.Index(replaced, "```")
+			if start < 0 {
+				break
+			}
+			endLine := strings.Index(replaced[start:], "\n")
+			if endLine < 0 {
+				break
+			}
+			end := start + endLine
+			prefix := replaced[:start]
+			header := strings.TrimSpace(strings.TrimPrefix(replaced[start:end], "```"))
+			suffix := replaced[end+1:]
+			if header == "" {
+				replaced = prefix + "```\n" + suffix
+			} else {
+				replaced = prefix + header + ":\n```\n" + suffix
+			}
+		}
+		return replaced
+	}
+	return text
+}
+
+func sha1String(s string) string {
+	sum := sha1.Sum([]byte(s))
+	return fmt.Sprintf("%x", sum)
 }
