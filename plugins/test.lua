@@ -37,7 +37,7 @@ if cmd == "lua" then
 
     -- Test 1: Basic Say
     bot:Log(log.Info, "Test 1: Basic Say - Sending 'Hello, Lua World!'")
-    local retVal1 = bot:Say("Hello, Crazy Lua World!")
+    local retVal1 = bot:Say("Hello, Crazy Fast Lua World!")
     if retVal1 == ret.Ok then
         bot:Log(log.Info, "Test 1 Passed: Say executed successfully.")
     else
