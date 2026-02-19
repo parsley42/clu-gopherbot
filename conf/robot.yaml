@@ -81,8 +81,8 @@ ScheduledJobs:
 
 ExternalPlugins:
   "ai":
-    Path: plugins/ai.rb
-    Description: A trivial plugin wrapping the OpenAI completions API
+    Path: plugins/ai.go
+    Description: A multi-user AI catchall plugin using external Go/yaegi
     ParameterSets:
     - "openai"
   "weather":
