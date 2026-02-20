@@ -80,9 +80,11 @@ ScheduledJobs:
 #   - "Goodbye, World !!!"
 
 ExternalPlugins:
-  "ai":
-    Path: plugins/ai.go
-    Description: A multi-user AI catchall plugin using external Go/yaegi
+  "openai-fallback":
+    Path: plugins/go-openai-fallback/ai.go
+    Description: A multi-user AI catchall plugin using OpenAI
+    Disabled: false
+    Parameters: []
     ParameterSets:
     - "openai"
   "weather":
