@@ -184,7 +184,7 @@ ParameterSets:
   "openai":
     Parameters:
     - Name: OPENAI_KEY
-      Value: "{{ decrypt "Wr74TfPqRTF3lRYuxk/wlSrFJYsj9Ril9DyS0HoQ/KcbUXStRarnwAl+++Z1usAAkI6MOxcicEpKtq0XEKynRe8y4j2Nx/luSKUQg0by0g==" }}"
+      Value: "{{ decrypt "fLpgydPjaVglrCb5t/6aAh6IwdjgYLvPmsywxGs8CfBIYKbLm/fOBanQWKb2LM/KOb1zlnppABDNo1GfU36IS8K3nc7gk1+sCAb9u7vpxIJmzQb9QxdRw2IQFj8iL45BiAtbCiAtywN52s86njJ6VCpws5c+CfwpXMRfTv3Mj5SOYTFz5zoU5+gcVExFtQg8eQ5UuNV0KVaKH5CoKm+w3UBphjhP1xyEGl7Onb2gUGMvKLpXhJdsEyi88UPWT5jC" }}"
 
 NameSpaces:
   "ssh":
