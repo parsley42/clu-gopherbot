@@ -1,3 +1,0 @@
-2026/02/18 14:30:12 Info: ******* GOPHERBOT STARTING UP -> mode 'cli' (running CLI command 'validate') with config dir: custom, and install dir: /home/david/git/gopherbot-work/gopherbot
-2026/02/18 14:30:12 Info: PRIVSEP - Privilege separation not in use
-2026/02/18 14:30:12 Info: No private environment loaded from '.env': open : no such file or directory
