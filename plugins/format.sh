@@ -53,7 +53,60 @@ Commands:
   Summary: "send a long raw-format message to test splitting"
   Examples:
   - "(alias) split raw"
+- Command: "render-basic"
+  Regex: '(?i:(?:render|format)[ -]?basic|exercise basic(?:[ -]?markdown)?)'
+  Keywords: [ "render", "format", "basicmarkdown", "emoji", "markdown" ]
+  Usage: "(alias) render-basic"
+  Summary: "render BasicMarkdown samples for all supported v1 elements"
+  Examples:
+  - "(alias) render-basic"
+  - "(alias) exercise BasicMarkdown"
 EOF
+}
+
+render_basic(){
+  local PREV_FORMAT=${GB_FORMAT:-}
+
+  MessageFormat BasicMarkdown
+
+  Say -r "Paragraph and line-break test:"
+  Say $'Hello team,\n\nPrometheus is crashing again.\nInvestigating now.'
+
+  Say -r "Bold and italic test:"
+  Say '**Deploy status:** failed; *rollback in progress*'
+
+  Say -r "Inline code test:"
+  Say 'Run `kubectl get pods` and check `CrashLoopBackOff`.'
+
+  Say -r "Fenced code block test:"
+  Say $'```yaml\napiVersion: v1\nkind: Pod\nmetadata:\n  name: basicmarkdown-demo\n```'
+
+  Say -r "Block quote test:"
+  Say $'> node is NotReady\n> rollout paused pending review'
+
+  Say -r "Unordered list test:"
+  Say $'- Service: payments-api\n- Namespace: prod\n- Owner: @parsley'
+
+  Say -r "Link test:"
+  Say 'See [runbook](https://example.com/runbook) and https://status.example.com'
+
+  Say -r "Mention test (resolved + unresolved + email false-positive):"
+  Say 'Paging @parsley for review; fallback @no_such_user; contact oncall@example.com'
+
+  Say -r "Emoji test:"
+  Say 'Core shortcodes: :white_check_mark: :warning: :x: :rocket: :fire: :joy: :thinking_face: :eyes: :thumbsup: :thumbsdown:'
+  Say 'Team shortcode: :priority-high:'
+  Say 'Unicode emoji: ✅ 🔥 😂'
+
+  Say -r "Escaping test:"
+  Say 'Literals: \*not bold\* \`not code\` \[label\]\(https://example.com\) \@parsley \\'
+
+  if [ -n "$PREV_FORMAT" ]
+  then
+    MessageFormat "$PREV_FORMAT"
+  else
+    unset GB_FORMAT
+  fi
 }
 
 case "$COMMAND" in
@@ -186,5 +239,8 @@ EOF
 EOF
 )
     Say "$FTEXT"
+    ;;
+  "render-basic")
+    render_basic
     ;;
 esac
