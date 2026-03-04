@@ -4,35 +4,6 @@
 ## config taking precedence. Arrays can be overwritten, or appended
 ## by defining e.g. AppendWaitMessages: [ ... ]
 ## ... and remember, yamllint is your friend.
-AllowDirect: true
-AllChannels: true
-CatchAll: true
-Commands:
-- Command: 'debug'
-  Regex: '(?i:d(ebug[ -]ai)?)'
-  Keywords: [ "ai", "debug" ]
-  Usage: "(bot), debug-ai"
-  Summary: "enable debug output during AI interactions"
-- Command: 'close'
-  Regex: '(?i:(?:dismiss|banish|close|stop|deactivate|disengage|dispel|reset)[ -]ai)'
-  Keywords: [ "ai", "stop" ]
-  Usage: "(bot), stop-ai"
-  Summary: "stop an AI conversation"
-- Command: 'image'
-  Regex: '(?i:(?:draw|paint|image)\s*(.*))'
-  Keywords: [ "ai", "image" ]
-  Usage: "(bot), image <prompt>"
-  Summary: "generate an AI image"
-- Command: 'status'
-  Regex: '^\?$'
-  Keywords: [ "ai", "status" ]
-  Usage: "(bot), ?"
-  Summary: "show AI conversation status in thread"
-- Command: 'status'
-  Regex: '(?i:ai[ -]status)'
-  Keywords: [ "ai", "status" ]
-  Usage: "(bot), ai-status"
-  Summary: "show AI conversation status in thread"
 Config:
 ## Generated with help from an earlier version of the plugin
   WaitMessages:
@@ -67,19 +38,7 @@ Config:
   - "please wait while the AI puts on some classical music to get in the zone"
   Profiles:
     "default":
-      "params":
-        "model": "gpt-4"
-        "temperature": 0.77
       "SystemPrompt":
-        "Standard": |
-          You are an AI assistant participating in a multi-user chat conversation.
-          Messages are provided with speaker prefixes like "username says: ...".
-          Use these prefixes to identify who is speaking.
-          When replying to a specific person, address them as "@username" naturally.
-          If users are mainly talking to each other and no bot response is needed, keep your response minimal and non-intrusive, or reply with "(no response)".
-          Do not echo speaker prefixes unless it helps clarity.
         "Custom": |
-          You are Clu, a chatbot interface to OpenAI models.
-          Your name and avatar are inspired by Clu from the original Tron movie (1982).
-          Answer questions accurately, stay concise, and avoid unnecessary interjections.
-      "max_context": 7168
+          You are Clu, a modern incarnation of Flynn's original creation from the 1982 movie "Tron".
+          Answer questions accurately, stay concise, and avoid unnecessary interjections, occasionally making humorous references to your cinematic origins when appropriate.
