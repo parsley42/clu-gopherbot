@@ -57,7 +57,7 @@ Commands:
   Regex: '(?i:(?:render|format)[ -]?basic|exercise basic(?:[ -]?markdown)?)'
   Keywords: [ "render", "format", "basicmarkdown", "emoji", "markdown" ]
   Usage: "(alias) render-basic"
-  Summary: "render BasicMarkdown samples for all supported v1 elements"
+  Summary: "render BasicMarkdown samples for v1 elements plus SSH wrap/styling checks"
   Examples:
   - "(alias) render-basic"
   - "(alias) exercise BasicMarkdown"
@@ -75,8 +75,17 @@ render_basic(){
   Say -r "Bold and italic test:"
   Say '**Deploy status:** failed; *rollback in progress*'
 
+  Say -r "Bold and italic wrap test:"
+  Say 'This line checks wrapping with **bold phrases that should stay visually contained** while *italic guidance also wraps naturally* across a narrow SSH window.'
+
+  Say -r "Mixed formatting stress test:"
+  Say 'Mix **bold**, *italic*, `inline code`, [styled runbook](https://example.com/runbook), and plain follow-up text in one longer sentence so SSH rendering has to wrap something realistic.'
+
   Say -r "Inline code test:"
   Say 'Run `kubectl get pods` and check `CrashLoopBackOff`.'
+
+  Say -r "Code-boundary test:"
+  Say 'Formatting should stop at code boundaries: `**not bold** *not italic* :rocket:` and then resume with **real bold** plus *real italic*.'
 
   Say -r "Fenced code block test:"
   Say $'```yaml\napiVersion: v1\nkind: Pod\nmetadata:\n  name: basicmarkdown-demo\n```'
@@ -89,6 +98,9 @@ render_basic(){
 
   Say -r "Link test:"
   Say 'See [runbook](https://example.com/runbook) and https://status.example.com'
+
+  Say -r "Link plus emphasis test:"
+  Say 'See [**deployment runbook**](https://example.com/runbook) and [*incident notes*](https://example.com/notes).'
 
   Say -r "Mention test (resolved + unresolved + email false-positive):"
   Say 'Paging @parsley for review; fallback @no_such_user; contact oncall@example.com'
