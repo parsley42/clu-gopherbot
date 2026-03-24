@@ -1,3 +1,5 @@
 ---
-# We want the AI to handle all catchalls
-Disabled: true
+# Deterministic fallback handles alias-addressed command mistakes.
+# Full-name and direct unmatched requests are handled by openai-fallback.
+CatchAllModes:
+- alias
