@@ -132,6 +132,9 @@ ExternalPlugins:
   "rubydemo":
     Description: Sample ruby plugin
     Path: plugins/samples/rubydemo.rb
+  "github-link":
+    ParameterSets:
+    - "github_oauth"
 
 ExternalTasks:
   "privtest":
@@ -178,6 +181,12 @@ ParameterSets:
       Value: "I swear I won't tell ANYBODY"
     - Name: "NOT_VERY_SECRET"
       Value: "You really shouldn't publish this!"
+  "github_oauth":
+    Parameters:
+    - Name: "CLIENT_ID"
+      Value: "e41f02460e58aa9c283e"
+    - Name: "CLIENT_SECRET"
+      Value: {{ decrypt "2V5vhH3/Ixo1GDXFrJp0AZwWVgKrvIpba8TjfiHGQN5gAjgTCJYmPr0Gv4sQKQJ5RgBNpUnU7n+CklfXkD1K7mZQ3n8=" }}
   "github-token":
     Description: "GitHub token for performing a variety of tasks"
     Parameters:
@@ -187,6 +196,15 @@ ParameterSets:
     Parameters:
     - Name: OPENAI_KEY
       Value: "{{ decrypt "fLpgydPjaVglrCb5t/6aAh6IwdjgYLvPmsywxGs8CfBIYKbLm/fOBanQWKb2LM/KOb1zlnppABDNo1GfU36IS8K3nc7gk1+sCAb9u7vpxIJmzQb9QxdRw2IQFj8iL45BiAtbCiAtywN52s86njJ6VCpws5c+CfwpXMRfTv3Mj5SOYTFz5zoU5+gcVExFtQg8eQ5UuNV0KVaKH5CoKm+w3UBphjhP1xyEGl7Onb2gUGMvKLpXhJdsEyi88UPWT5jC" }}"
+
+OAuth2Providers:
+  github:
+    CredentialParameterSet: github_oauth
+    TokenEndpointAuthMethod: client_secret_post
+    Token:
+      URL: https://github.com/login/oauth/access_token
+      Headers:
+        Accept: application/json
 
 NameSpaces:
   "ssh":
