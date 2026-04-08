@@ -3,7 +3,6 @@ ProtocolConfig:
   Abort: '!abort'
   HearSelf: true
   GenerateNewlines: true
-  BotName: 'clu'
   StartChannel: clu-jobs
   StartUser: parsley
   Channels:

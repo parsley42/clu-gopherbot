@@ -1,7 +1,6 @@
 ProtocolConfig:
   ListenHost: localhost
   DefaultChannel: general
-  BotName: clu
   Color: true
   Channels:
   - general

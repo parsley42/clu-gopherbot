@@ -66,52 +66,90 @@ EOF
 
 render_basic(){
   local PREV_FORMAT=${GB_FORMAT:-}
+  local BASIC_DEMO_1 BASIC_DEMO_2 BASIC_DEMO_3 LONG_BODY LONG_MD LONG_PART
+  local i
 
   MessageFormat BasicMarkdown
 
-  Say -r "Paragraph and line-break test:"
-  Say $'Hello team,\n\nPrometheus is crashing again.\nInvestigating now.'
+  BASIC_DEMO_1=$(cat <<'EOF'
+**Paragraph and line-break test:**
+Hello team,
 
-  Say -r "Bold and italic test:"
-  Say '**Deploy status:** failed; *rollback in progress*'
+Prometheus is crashing again.
+Investigating now.
 
-  Say -r "Bold and italic wrap test:"
-  Say 'This line checks wrapping with **bold phrases that should stay visually contained** while *italic guidance also wraps naturally* across a narrow SSH window.'
+**Bold and italic test:**
+**Deploy status:** failed; *rollback in progress*
 
-  Say -r "Mixed formatting stress test:"
-  Say 'Mix **bold**, *italic*, `inline code`, [styled runbook](https://example.com/runbook), and plain follow-up text in one longer sentence so SSH rendering has to wrap something realistic.'
+**Bold and italic wrap test:**
+This line checks wrapping with **bold phrases that should stay visually contained** while *italic guidance also wraps naturally* across a narrow SSH window.
 
-  Say -r "Inline code test:"
-  Say 'Run `kubectl get pods` and check `CrashLoopBackOff`.'
+**Mixed formatting stress test:**
+Mix **bold**, *italic*, `inline code`, [styled runbook](https://example.com/runbook), and plain follow-up text in one longer sentence so SSH rendering has to wrap something realistic.
 
-  Say -r "Code-boundary test:"
-  Say 'Formatting should stop at code boundaries: `**not bold** *not italic* :rocket:` and then resume with **real bold** plus *real italic*.'
+**Inline code test:**
+Run `kubectl get pods` and check `CrashLoopBackOff`.
 
-  Say -r "Fenced code block test:"
-  Say $'```yaml\napiVersion: v1\nkind: Pod\nmetadata:\n  name: basicmarkdown-demo\n```'
+**Code-boundary test:**
+Formatting should stop at code boundaries: `**not bold** *not italic* :rocket:` and then resume with **real bold** plus *real italic*.
+EOF
+)
+  Say "$BASIC_DEMO_1"
 
-  Say -r "Block quote test:"
-  Say $'> node is NotReady\n> rollout paused pending review'
+  BASIC_DEMO_2=$(cat <<'EOF'
+**Fenced code block test:**
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: basicmarkdown-demo
+```
 
-  Say -r "Unordered list test:"
-  Say $'- Service: payments-api\n- Namespace: prod\n- Owner: @parsley'
+**Block quote test:**
+> node is NotReady
+> rollout paused pending review
 
-  Say -r "Link test:"
-  Say 'See [runbook](https://example.com/runbook) and https://status.example.com'
+**Unordered list test:**
+- Service: payments-api
+- Namespace: prod
+- Owner: @parsley
 
-  Say -r "Link plus emphasis test:"
-  Say 'See [**deployment runbook**](https://example.com/runbook) and [*incident notes*](https://example.com/notes).'
+**Link test:**
+See [runbook](https://example.com/runbook) and https://status.example.com
 
-  Say -r "Mention test (resolved + unresolved + email false-positive):"
-  Say 'Paging @parsley for review; fallback @no_such_user; contact oncall@example.com'
+**Link plus emphasis test:**
+See [**deployment runbook**](https://example.com/runbook) and [*incident notes*](https://example.com/notes).
 
-  Say -r "Emoji test:"
-  Say 'Core shortcodes: :white_check_mark: :warning: :x: :rocket: :fire: :joy: :thinking_face: :eyes: :thumbsup: :thumbsdown:'
-  Say 'Team shortcode: :priority-high:'
-  Say 'Unicode emoji: ✅ 🔥 😂'
+**Mention test (resolved + unresolved + email false-positive):**
+Paging @parsley for review; fallback @no_such_user; contact oncall@example.com
+EOF
+)
+  Say "$BASIC_DEMO_2"
 
-  Say -r "Escaping test:"
-  Say 'Literals: \*not bold\* \`not code\` \[label\]\(https://example.com\) \@parsley \\'
+  BASIC_DEMO_3=$(cat <<'EOF'
+**Emoji test:**
+Core shortcodes: :white_check_mark: :warning: :x: :rocket: :fire: :joy: :thinking_face: :eyes: :thumbsup: :thumbsdown:
+Team shortcode: :priority-high:
+Unicode emoji: ✅ 🔥 😂
+
+**Escaping test:**
+Literals: \*not bold\* \`not code\` \[label\]\(https://example.com\) \@parsley \\
+EOF
+)
+  Say "$BASIC_DEMO_3"
+
+  LONG_BODY=
+  for i in $(seq 1 80)
+  do
+    printf -v LONG_PART 'Paragraph %02d: **deploy note** with *operator context*, `kubectl get pods`, [runbook](https://example.com/runbook), @parsley review, and follow-up prose for markdown stress testing.\n\n' "$i"
+    LONG_BODY+="$LONG_PART"
+    if [ ${#LONG_BODY} -ge 11500 ]
+    then
+      break
+    fi
+  done
+  printf -v LONG_MD '**Long markdown stress test (~%d chars before heading):**\nThis should arrive in Slack as one large BasicMarkdown message rather than many tiny ones.\n\n%s' "${#LONG_BODY}" "$LONG_BODY"
+  Say "$LONG_MD"
 
   if [ -n "$PREV_FORMAT" ]
   then

@@ -9,8 +9,10 @@ ProtocolConfig:
   AcceptSlashCommands: true
   SlashCommand: "/clu"
   HearSelf: true
+  AcceptSlashCommands: true
+  SlashCommand: /clu
   UserMap:
-    # Floyd is the production robot that builds gopherbot
+    # Floyd hasn't run in years, but we keep the reference around for nostalgia
     floyd: U138KTVCL
     clu: U03MFS3PHMF
     adrienne: U0JM3H95G
