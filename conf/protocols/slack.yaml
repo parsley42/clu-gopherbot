@@ -7,10 +7,8 @@ ProtocolConfig:
   BotToken: {{ decrypt "tcxZB6aQK5htxBVGBz84kOMJfZrYfynv65mfDUbHfAPYl7OKNaZSL5ifGiJqzQ0oQz3ptRbv+VsSnsDnMlq4GftpAvY+SPsMkz9vPyNOuOdJWlw=" }}
 {{ end}}
   AcceptSlashCommands: true
-  SlashCommand: "/clu"
-  HearSelf: true
-  AcceptSlashCommands: true
   SlashCommand: /clu
+  HearSelf: true
   UserMap:
     # Floyd hasn't run in years, but we keep the reference around for nostalgia
     floyd: U138KTVCL

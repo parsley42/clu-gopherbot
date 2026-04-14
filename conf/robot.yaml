@@ -133,6 +133,7 @@ ExternalPlugins:
     Description: Sample ruby plugin
     Path: plugins/samples/rubydemo.rb
   "github-link":
+    Path: plugins/go-github-link/github_link.go
     ParameterSets:
     - "github_oauth"
 
@@ -197,14 +198,16 @@ ParameterSets:
     - Name: OPENAI_KEY
       Value: "{{ decrypt "fLpgydPjaVglrCb5t/6aAh6IwdjgYLvPmsywxGs8CfBIYKbLm/fOBanQWKb2LM/KOb1zlnppABDNo1GfU36IS8K3nc7gk1+sCAb9u7vpxIJmzQb9QxdRw2IQFj8iL45BiAtbCiAtywN52s86njJ6VCpws5c+CfwpXMRfTv3Mj5SOYTFz5zoU5+gcVExFtQg8eQ5UuNV0KVaKH5CoKm+w3UBphjhP1xyEGl7Onb2gUGMvKLpXhJdsEyi88UPWT5jC" }}"
 
-OAuth2Providers:
+IdentityProviders:
   github:
+    Type: oauth2
     CredentialParameterSet: github_oauth
-    TokenEndpointAuthMethod: client_secret_post
-    Token:
-      URL: https://github.com/login/oauth/access_token
-      Headers:
-        Accept: application/json
+    OAuth2:
+      TokenEndpointAuthMethod: client_secret_post
+      Token:
+        URL: https://github.com/login/oauth/access_token
+        Headers:
+          Accept: application/json
 
 NameSpaces:
   "ssh":
