@@ -1,0 +1,15 @@
+ProtocolConfig:
+  ProjectID: chatapi-clu-gopherbot
+  SubscriptionID: "gopherbot-chat-sub"
+  CredentialsEncryptedFile: gopherbot-key.json.enc
+  # When true, the connector creates and maintains per-space Google Workspace
+  # Events subscriptions so it can receive ambient message traffic in spaces
+  # where the app has been added. Requires admin-approved chat.app.* scopes.
+  AmbientMessages: true
+  ThreadResponses: false
+  # Set this to the slash command name configured in the Google Chat API,
+  # without or with the leading slash. It is used for hidden-command help and
+  # fallback rendering, and enables hidden command support in the connector.
+  SlashCommand: clu
+  UserMap:
+    parsley: "users/104265192829011490173"
