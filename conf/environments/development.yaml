@@ -2,5 +2,5 @@
 PrimaryProtocol: ssh
 DefaultProtocol: ssh
 SecondaryProtocols: [ "slack" ]
-Brain: file
+Brain: firestore
 LogDest: stdout
