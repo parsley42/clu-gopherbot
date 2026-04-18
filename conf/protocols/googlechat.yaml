@@ -1,7 +1,6 @@
 ProtocolConfig:
   ProjectID: chatapi-clu-gopherbot
   SubscriptionID: "gopherbot-chat-sub"
-  CredentialsEncryptedFile: gopherbot-key.json.enc
   # When true, the connector creates and maintains per-space Google Workspace
   # Events subscriptions so it can receive ambient message traffic in spaces
   # where the app has been added. Requires admin-approved chat.app.* scopes.

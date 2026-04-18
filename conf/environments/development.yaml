@@ -1,7 +1,6 @@
 ## Development defaults for Clu.
 PrimaryProtocol: ssh
 DefaultProtocol: ssh
-# SecondaryProtocols: [ "slack", "googlechat" ]
-SecondaryProtocols: [ "googlechat" ]
+SecondaryProtocols: [ "slack", "googlechat" ]
 Brain: firestore
 LogDest: stdout
