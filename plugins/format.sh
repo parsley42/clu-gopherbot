@@ -14,10 +14,10 @@ Commands:
   Regex: '(?i:format world)'
   Keywords: [ "format", "world" ]
   Usage: "(alias) format world"
-  Summary: "exercise formatting options"
+  Summary: "exercise raw, variable, fixed, and BasicMarkdown formatting"
   Examples:
   - "(alias) format world"
-  Helptext: [ "(alias) format world - exercise formatting options" ]
+  Helptext: [ "(alias) format world - exercise raw, variable, fixed, and BasicMarkdown formatting" ]
 - Command: "fixed"
   Regex: '(?i:format fixed)'
   Keywords: [ "format", "fixed" ]
@@ -164,18 +164,14 @@ case "$COMMAND" in
     configure
     ;;
   "format")
-    # Change default format
-    MessageFormat Variable
     PROTO=$(GetBotAttribute protocol)
+    SENDER=$(GetSenderAttribute username)
     Say "Hello, $PROTO World!"
-    # Use default format
-    Say 'Default _Italics_ <One> :100: *Bold* `Code` @parsley <https://cnn.com|*CNN*>'
-    # Raw
     Say -r 'Raw _Italics_ <One> :100: *Bold* `Code` @parsley <https://cnn.com|*CNN*>'
-    # Variable
     Say -v 'Variable _Italics_ <One> :100: *Bold* `Code` @parsley <https://cnn.com|*CNN*>'
-    # Fixed
-    Say -f 'Fixed _Italics_ <One> :100: *Bold* `Code` @parsley <https://cnn.com|*CNN*>'
+    Say -f 'Fixed _Italics_ <One> *Bold* `Code` @parsley <https://cnn.com|*CNN*>'
+    MessageFormat BasicMarkdown
+    Say "BasicMarkdown @$SENDER, \`inline code\`, [web link](https://something), **bold**, *italics*, :rocket:, and 🔥."
     ;;
   "fixed")
     Say -f '_Italics_ <One> *Bold* `Code` @parsley <https://cnn.com|*CNN*>'
