@@ -3,4 +3,5 @@ PrimaryProtocol: ssh
 DefaultProtocol: ssh
 SecondaryProtocols: [ "slack", "googlechat" ]
 Brain: firestore
+# Brain: mem
 LogDest: stdout
