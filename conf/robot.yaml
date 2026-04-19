@@ -38,7 +38,7 @@ AppendUserRoster:
 - UserName: adrienne
 - UserName: parsley
 
-LogLevel: {{ env "GOPHER_LOG_LEVEL" | default "debug" }}
+LogLevel: Info
 
 # Defaults for history and workspace directories, relative to the
 # process working directory.
