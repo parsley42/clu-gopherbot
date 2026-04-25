@@ -1,5 +1,5 @@
 ---
-Disabled: true
+# Disabled: true
 AllChannels: true
 # ElevatedCommands:
 # - echo

@@ -54,6 +54,14 @@ Commands:
   Examples:
   - "(alias) protocol-tell slack general parsley hi"
   Helptext: [ "(alias) protocol-tell <proto> <channel> <user> <message> - send a cross-protocol directed message" ]
+- Command: "twiddle"
+  Regex: '(?i:twiddle thumbs ([0-9]+[smhd]?))'
+  Keywords: [ "twiddle", "thumbs" ]
+  Usage: "(alias) twiddle thumbs <timespec>"
+  Summary: "loop indefinitely while twiddling thumbs"
+  Examples:
+  - "(alias) twiddle thumbs 2s"
+  Helptext: [ "(alias) twiddle thumbs <timespec> - Log a debug message and sleep for timespec, in a loop" ]
 EOF2
 }
 
@@ -111,6 +119,14 @@ case "$command" in
 		else
 			Reply "protocol-tell sent to $PROTO/$CHANNEL (user: $TARGET_USER)"
 		fi
+		;;
+	"twiddle")
+		TIMESPEC="$1"
+		Say "ok, I'm twiddling my thumbs..."
+		while true; do
+			Log "Debug" "twiddling thumbs for $TIMESPEC"
+			sleep "$TIMESPEC"
+		done
 		;;
 	"init")
 		echo "Clu starting up!"
