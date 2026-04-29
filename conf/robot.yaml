@@ -109,7 +109,7 @@ ExternalPlugins:
     NameSpace: ssh
     ParameterSets:
     - verysecret
-    Path: plugins/echo.sh
+    Path: plugins/echo.gsh
   "format":
     Description: Plugin that exercises message formats
     Path: plugins/format.sh
