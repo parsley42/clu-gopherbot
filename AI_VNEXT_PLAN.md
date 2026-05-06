@@ -15,7 +15,7 @@ This document captures the implementation slices for migrating Clu's AI catchall
 
 1. Slice 1: Scaffold external Go AI plugin and switch plugin path.
 2. Slice 2: Conversation state model and per-conversation serialization via `Exclusive(tag, true)`.
-3. Slice 3: OpenAI SSE streaming with paragraph-chunk output and trailing ` (...)` for non-final chunks.
+3. Slice 3: provider SSE streaming with paragraph-chunk output and trailing ` (...)` for non-final chunks.
 4. Slice 4: UX controls and hardening (`status`, `close`, `debug`, busy acknowledgements, token/context handling).
 5. Slice 5: Verification with gopherbot-mcp (including multi-user simulation), docs updates, and invariants check.
 

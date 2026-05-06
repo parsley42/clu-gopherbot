@@ -6,4 +6,4 @@ Config:
   TimeoutType: idle # or absolute
   Users:
   - User: "parse"
-    Secret: "{{ decrypt "DNIUIpC5dbMSaiSkSYdFGa7ocIIqUkhp6qQE967MdD1JziBNBhQo03oZLDRY5nuBAszsoFtVl4o3nBvG" }}"
+    Secret: {{ secret "TOTP_PARSE_SECRET" | printf "%q" }}

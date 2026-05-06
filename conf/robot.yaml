@@ -37,6 +37,9 @@ AppendUserRoster:
   BotUser: true
 - UserName: adrienne
 - UserName: parsley
+- UserName: alice
+- UserName: bob
+- UserName: carol
 
 LogLevel: Info
 
@@ -51,7 +54,7 @@ HistoryProvider: {{ $history }}
 
 ## Later: modify this for other protocols
 {{ $defaultjobchannel := "clu-jobs" }}
-DefaultJobChannel: {{ env "GOPHER_JOBCHANNEL" | default $defaultjobchannel }}
+DefaultJobChannel: {{ env "GOPHER_JOBCHANNEL" | default (variable "DEFAULT_JOB_CHANNEL") | default $defaultjobchannel }}
 
 ## If the plugin doesn't specify an outgoing message format, what's the default?
 ## This will be 'Raw' (unmodified, subject to protocol-specific formatting) if
@@ -80,23 +83,23 @@ ScheduledJobs:
 #   - "Goodbye, World !!!"
 
 ExternalPlugins:
-  "openai-fallback":
-    Path: plugins/go-openai-fallback/ai.go
-    Description: A multi-user AI catchall plugin using OpenAI
+  "ai-fallback":
+    Path: plugins/go-ai-fallback/ai.go
+    Description: A multi-user AI catchall plugin using a chat-completions provider
     Disabled: false
     Parameters: []
     ParameterSets:
-    - "openai"
+    - "ai"
   "weather":
     Description: A plugin that uses OpenWeatherMap to report the weather
     Path: plugins/weather.rb
     Parameters:
     - Name: OWM_APIKEY
-      Value: {{ decrypt "KYJzQD8jvfq3liQYPovkdgxe86Im2w79l9YgAQlc1rOBybCLKrDzjkTV8WeLyvah1F5H0vrYGIjfjp8Q" }}
+      Value: {{ secret "OWM_APIKEY" | printf "%q" }}
     - Name: TEMP_UNITS
-      Value: {{ env "GOPHER_OWM_UNITS" | default "imperial" }} # or 'metric'
+      Value: {{ env "GOPHER_OWM_UNITS" | default (variable "TEMP_UNITS") | printf "%q" }} # or 'metric'
     - Name: DEFAULT_COUNTRY
-      Value: {{ env "GOPHER_OWM_COUNTRY" | default "us" }} # or other ISO 3166 country code
+      Value: {{ env "GOPHER_OWM_COUNTRY" | default (variable "DEFAULT_COUNTRY") | printf "%q" }} # or other ISO 3166 country code
   "chuck":
     Description: A plugin that pipes up whenever The Man's name is mentioned
     Path: plugins/chuck.lua
@@ -187,16 +190,16 @@ ParameterSets:
     - Name: "CLIENT_ID"
       Value: "e41f02460e58aa9c283e"
     - Name: "CLIENT_SECRET"
-      Value: {{ decrypt "2V5vhH3/Ixo1GDXFrJp0AZwWVgKrvIpba8TjfiHGQN5gAjgTCJYmPr0Gv4sQKQJ5RgBNpUnU7n+CklfXkD1K7mZQ3n8=" }}
+      Value: {{ secret "GITHUB_CLIENT_SECRET" | printf "%q" }}
   "github-token":
     Description: "GitHub token for performing a variety of tasks"
     Parameters:
     - Name: "GITHUB_TOKEN"
-      Value: "{{ decrypt "fdpNIcQnOD0GrlOeQbUfPB0i6iGp+cqn3WPWRum/Ycl/IJZeVsFYFlJjoNhXITTl0TNWJZ8HjUw1jfvjbGr24ENmFUo=" }}"
-  "openai":
+      Value: {{ secret "GITHUB_TOKEN" | printf "%q" }}
+  "ai":
     Parameters:
-    - Name: OPENAI_KEY
-      Value: "{{ decrypt "fLpgydPjaVglrCb5t/6aAh6IwdjgYLvPmsywxGs8CfBIYKbLm/fOBanQWKb2LM/KOb1zlnppABDNo1GfU36IS8K3nc7gk1+sCAb9u7vpxIJmzQb9QxdRw2IQFj8iL45BiAtbCiAtywN52s86njJ6VCpws5c+CfwpXMRfTv3Mj5SOYTFz5zoU5+gcVExFtQg8eQ5UuNV0KVaKH5CoKm+w3UBphjhP1xyEGl7Onb2gUGMvKLpXhJdsEyi88UPWT5jC" }}"
+    - Name: AI_API_KEY
+      Value: {{ secret "AI_API_KEY" | printf "%q" }}
 
 IdentityProviders:
   github:
@@ -215,13 +218,13 @@ NameSpaces:
     - Name: "KEYNAME"
       Value: "robot_key"
     - Name: BOT_SSH_PHRASE
-      Value: {{ decrypt "CBow8Kg/9iynxBQFWru+EdWAookX7ERVKcUuLEIp9NDZcpm/QDChILq9p0/2X2dCB7gIrJ4=" }}
+      Value: {{ secret "SSH_KEY_PASSPHRASE" | printf "%q" }}
   "manage":
     AppendParameters:
     - Name: "KEYNAME"
       Value: "manage_key"
     - Name: BOT_SSH_PHRASE
-      Value: {{ decrypt "CBow8Kg/9iynxBQFWru+EdWAookX7ERVKcUuLEIp9NDZcpm/QDChILq9p0/2X2dCB7gIrJ4=" }}
+      Value: {{ secret "SSH_KEY_PASSPHRASE" | printf "%q" }}
 
 DefaultMessageFormat: Raw
 # Users the bot should never listen to
@@ -237,7 +240,7 @@ MailConfig:
   Mailhost: smtp.gmail.com:587
   Authtype: plain
   User: clu@linuxjedi.org
-  Password: {{ decrypt "dIeNE9EID+eXIrutB+8hQQrhBD5cBxSSVzYLlwtj5hX7Lhs/j6uAUl538ro=" }}
+  Password: {{ secret "MAIL_PASSWORD" | printf "%q" }}
 
 ## Use Google Authenticator TOTP by default for elevated commands. To use:
 ## - Ask the robot to 'send launch codes', and it will send you (one time)

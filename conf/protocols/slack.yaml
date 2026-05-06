@@ -1,10 +1,10 @@
 ProtocolConfig:
   MaxMessageSplit: {{ env "GOPHER_SLACK_MAX_MSGS" | default "2" }}
 {{ if env "SLACK_LEGACY" }}
-  SlackToken: {{ decrypt "XfZfYsOi9wu/+H561r9tloLJRWE5xDEp5ExP9L2P6iOKc/ZliWqFySLmmM4OlywwyAuwj3oEDyKBz63u+vXqzKFzePgaXWNaQY6/qSaNQ0m60gQ=" }}
+  SlackToken: {{ secret "SLACK_LEGACY_TOKEN" | printf "%q" }}
 {{ else }}
-  AppToken: {{ decrypt "ElZYmgds5BA52QVjjd/c/Dw13cRvk6X72TuMNoVSjM6MxMU03p+NLBCzhN8dxy4zTLXyadPwkLoiwOYMFAotf+W1THeMFDKsCxTAx/H7KBIlqZO860bGbNiVqxV+kVgV+rgrmDmgSjGw1dWZIyoqzmR1ooJ5MFVjl/3oYYI=" }}
-  BotToken: {{ decrypt "tcxZB6aQK5htxBVGBz84kOMJfZrYfynv65mfDUbHfAPYl7OKNaZSL5ifGiJqzQ0oQz3ptRbv+VsSnsDnMlq4GftpAvY+SPsMkz9vPyNOuOdJWlw=" }}
+  AppToken: {{ secret "SLACK_APP_TOKEN" | printf "%q" }}
+  BotToken: {{ secret "SLACK_BOT_TOKEN" | printf "%q" }}
 {{ end}}
   AcceptSlashCommands: true
   SlashCommand: /clu

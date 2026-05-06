@@ -6,39 +6,33 @@ AppendCommands:
 - Command: "806713"
   Regex: '(?i:(.+ .+) (derp!?))'
   Keywords: [ "meme", "derp" ]
-  Usage: "(bot), <something> derp"
+  Usage: "<something> derp"
   Summary: "shortest path to DERP"
-  Helptext: [ "(bot), <something> derp - shortest path to DERP" ]
 - Command: "806713"
   Regex: '(?i:derpface ([^/]+)(?:/([^/]+))?)'
   Keywords: [ "meme", "derp" ]
-  Usage: "(bot), derpface <something>/<something>"
+  Usage: "derpface <something>/<something>"
   Summary: "when you need a DERP face"
-  Helptext: [ "(bot), derpface <something>/<something> - when you need a DERP face" ]
 - Command: "27584969"
   Regex: '(?i:batderp ([^/]+)(?:/([^/]+))?)'
   Keywords: [ "meme", "derp", "batman" ]
-  Usage: "(bot), batderp <something>/<something>"
+  Usage: "batderp <something>/<something>"
   Summary: "for heroicly Bat-tastic DERPS"
-  Helptext: [ "(bot), batderp <something>/<something> - for heroicly Bat-tastic DERPS" ]
 - Command: "28387334"
   Regex: '(?i:derpgiraffe ([^/]+)(?:/([^/]+))?)'
   Keywords: [ "meme", "derp", "giraffe" ]
-  Usage: "(bot), derpgiraffe <something>/<something>"
+  Usage: "derpgiraffe <something>/<something>"
   Summary: "a derp for animal lovers"
-  Helptext: [ "(bot), derpgiraffe <something>/<something> - a derp for animal lovers" ]
 - Command: "14859329"
   Regex: '(?i:sheenderp ([^/]+)(?:/([^/]+))?)'
   Keywords: [ "meme", "derp", "charlie", "sheen" ]
-  Usage: "(bot), sheenderp <something>/<something>"
+  Usage: "sheenderp <something>/<something>"
   Summary: "when you ask yourself have I taken too many meds"
-  Helptext: [ "(bot), sheenderp <something>/<something> - when you ask yourself have I taken too many meds" ]
 - Command: "43953962"
   Regex: '(?i:derpcat ([^/]+)(?:/([^/]+))?)'
   Keywords: [ "meme", "derp", "cat", "kitten" ]
-  Usage: "(bot), derpcat <something>/<something>"
+  Usage: "derpcat <something>/<something>"
   Summary: "adorable / disturbing derp"
-  Helptext: [ "(bot), derpcat <something>/<something> - adorable / disturbing derp" ]
 Config:
   Username: dpmemer
-  Password: {{ decrypt "P8btBB3sT2zILIBqQPNZ49g4Rm2rJtIIVzqrYDhVZOOMNsXnSPFtDA==" }}
+  Password: {{ secret "IMGFLIP_PASSWORD" | printf "%q" }}

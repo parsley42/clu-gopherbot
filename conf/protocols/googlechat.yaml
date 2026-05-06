@@ -1,6 +1,6 @@
 ProtocolConfig:
   ProjectID: clu-program-new
   SlashCommand: clu
+  SelfID: "users/109878360902797385541"
   UserMap:
     parsley: "users/104265192829011490173"
-    clu: "users/109878360902797385541"

@@ -1,6 +1,6 @@
 ---
 # Deterministic fallback handles alias-addressed and full-name command mistakes.
-# Direct unmatched requests are still handled by openai-fallback.
+# Direct unmatched requests are still handled by ai-fallback.
 CatchAllModes:
 - alias
 - name
