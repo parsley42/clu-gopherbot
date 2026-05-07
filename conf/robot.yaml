@@ -75,6 +75,8 @@ ScheduledJobs:
 # These jobs run even in the terminal connector
 - Name: "pause-notifies"
   Schedule: "0 0 8 * * *"
+- Name: "go-ai-prune"
+  Schedule: "0 15 3 * * *"
 # - Name: init
 #   Schedule: "@init" # special Gopherbot syntax, run job during init
 # - Name: hello
