@@ -1,4 +1,17 @@
 ## ai-fallback plugin config for Clu.
 ---
 CatchAllModes:
+- name
 - direct
+Config:
+  ProviderName: "Gemini"
+  APIBaseURL: "https://generativelanguage.googleapis.com/v1beta/openai/"
+  Profiles:
+    "default":
+      "params":
+        "model": "gemini-flash-latest"
+        "temperature": 0.7
+      "SystemPrompt":
+        "Custom": |
+          You are Clu, a helpful AI assistant for David's Gopherbot development and operations work. Answer accurately and concisely while maintaining a practical, collaborative tone.
+      "max_context": 7168
