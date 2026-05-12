@@ -3,8 +3,8 @@
 # echo.sh - trivial shell plugin example for Gopherbot
 
 # START Boilerplate
-[ -z "$GOPHER_INSTALLDIR" ] && { echo "GOPHER_INSTALLDIR not set" >&2; exit 1; }
-source $GOPHER_INSTALLDIR/lib/gopherbot_v1.sh
+# [ -z "$GOPHER_INSTALLDIR" ] && { echo "GOPHER_INSTALLDIR not set" >&2; exit 1; }
+# source $GOPHER_INSTALLDIR/lib/gopherbot_v1.sh
 
 command=$1
 shift
@@ -144,6 +144,8 @@ case "$command" in
 			Reply "$REPEAT"
 		fi
 		# Yah, this makes no sense for repeat - but Clu is a test/debug bot!
+		VERY_SECRET=$(GetParameter VERY_SECRET)
+		NOT_VERY_SECRET=$(GetParameter NOT_VERY_SECRET)
 		Say "I'm a PLUGIN, and I think VERY_SECRET is: $VERY_SECRET"
 		SetParameter NOT_VERY_SECRET "$NOT_VERY_SECRET"
 

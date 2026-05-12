@@ -6,7 +6,6 @@ require 'gopherbot_v1'
 bot = Robot.new()
 
 defaultConfig = <<'DEFCONFIG'
-AllowDirect: false
 Commands:
 - Regex: '(?i:say anything)'
   Command: "sayit"
