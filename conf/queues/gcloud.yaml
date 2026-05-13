@@ -1,0 +1,7 @@
+---
+QueueConfig:
+  ProjectID: clu-program-new
+  SubscriptionID: job-triggers-pull
+  CredentialsEncryptedFile: gopherbot-key.json.enc
+  NumGoroutines: 1
+  MaxOutstandingMessages: 1

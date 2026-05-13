@@ -1,5 +1,6 @@
 ---
 KeepLogs: 7
+UUIDTrigger: {{ secret "MYFIRSTJOB_UUID" | printf "%q" }}
 Arguments:
 - Label: phrase
   Regex: '.+'

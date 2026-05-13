@@ -52,6 +52,9 @@ LogLevel: Info
 {{ $history := env "GOPHER_HISTORY_PROVIDER" | default "file" }}
 HistoryProvider: {{ $history }}
 
+QueueProviders:
+- gcloud
+
 ## Later: modify this for other protocols
 {{ $defaultjobchannel := "clu-jobs" }}
 DefaultJobChannel: {{ env "GOPHER_JOBCHANNEL" | default (variable "DEFAULT_JOB_CHANNEL") | default $defaultjobchannel }}
