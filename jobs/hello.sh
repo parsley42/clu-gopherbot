@@ -5,7 +5,10 @@
 # NOTE: this sample job uses the bot library, most jobs probably won't
 source $GOPHER_INSTALLDIR/lib/gopherbot_v1.sh
 
-PHRASE=$1
+PHRASE="$1"
+NONCE=$(GetParameter "NONCE")
+VERY_SECRET=$(GetParameter "VERY_SECRET")
+NOT_VERY_SECRET=$(GetParameter "NOT_VERY_SECRET")
 
 if Exclusive "world" "true"
 then
@@ -30,7 +33,7 @@ AddTask pause-brain
 AddTask say "I've paused my brain !!"
 AddTask exec sleep 3
 AddTask resume-brain
-AddTask exec /bin/false foo bar baz
+AddTask say "$PHRASE / $NONCE - now I'll restart myself!"
+#AddTask exec /bin/false foo bar baz
 #FinalTask email-log parsley@linuxjedi.org
-#AddTask say "$PHRASE / $NONCE - now I'll restart myself!"
 #AddTask restart-robot
